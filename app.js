@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  res.send("Chào mừng đến với website của Leader Anh Khoa");
 });
 
 const PORT = 3000;
