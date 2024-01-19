@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="style/login.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style/login.css" />
     <style>
       .divider:after,
       .divider:before {
@@ -35,7 +35,7 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
               class="img-fluid"
               alt="Sample image"
             />
@@ -43,37 +43,10 @@
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <form>
               <div class="divider d-flex align-items-center my-4">
-                <p class="text-center fw-bold mx-3 mb-0">Mời Bạn Đăng Ký</p>
-              </div>
-              <div class="row mb-4">
-                <div class="col-md-6 mb-4">
-                  <div class="form-outline">
-                    <input
-                      type="text"
-                      id="form3Example1"
-                      class="form-control form-control-lg"
-                      placeholder="First Name"
-                    />
-                    <label class="form-label" for="form3Example1"
-                      >First Name</label
-                    >
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="form-outline">
-                    <input
-                      type="text"
-                      id="form3Example2"
-                      class="form-control form-control-lg"
-                      placeholder="Last Name"
-                    />
-                    <label class="form-label" for="form3Example2"
-                      >Last Name</label
-                    >
-                  </div>
-                </div>
+                <p class="text-center fw-bold mx-3 mb-0">Mời Bạn Đăng Nhập</p>
               </div>
 
+              <!-- Email input -->
               <div class="form-outline mb-4">
                 <input
                   type="email"
@@ -97,14 +70,34 @@
                 <label class="form-label" for="form3Example4">Password</label>
               </div>
 
+              <div class="d-flex justify-content-between align-items-center">
+                <!-- Checkbox -->
+                <div class="form-check mb-0">
+                  <input
+                    class="form-check-input me-2"
+                    type="checkbox"
+                    value=""
+                    id="form2Example3"
+                  />
+                  <label class="form-check-label" for="form2Example3">
+                    Remember me
+                  </label>
+                </div>
+                <a href="#!" class="text-body">Forgot password?</a>
+              </div>
+
               <div class="text-center text-lg-start mt-4 pt-2">
                 <button
                   type="button"
                   class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                 >
-                  SingIn
+                  Login
                 </button>
+                <p class="small fw-bold mt-2 pt-1 mb-0">
+                  Don't have an account?
+                  <a href="/signIn" class="link-danger">Register</a>
+                </p>
               </div>
             </form>
           </div>
@@ -117,6 +110,11 @@
         <div class="text-white mb-3 mb-md-0">
           Copyright © 2020. All rights reserved.
         </div>
+        <!-- Copyright -->
+
+        <!-- Right -->
+
+        <!-- Right -->
       </div>
     </section>
   </body>
