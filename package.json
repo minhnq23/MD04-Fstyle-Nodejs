@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/minhnq23/MD-04-Fstyle-Nodejs-Server#readme",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "mongoose": "^8.1.0",
     "nodemon": "^3.0.3"
   }
 }
