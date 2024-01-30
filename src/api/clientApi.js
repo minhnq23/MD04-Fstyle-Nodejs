@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userController = require("../../controllers/userController");
 const User = require("../../models/user");
-router.post("/api/user/post", userController.postUser);
-
+router.post("/api/user/client/post", userController.postUser);
+router.put("/api/user/client/update/:id", userController.postUser);
 
 module.exports = router;
