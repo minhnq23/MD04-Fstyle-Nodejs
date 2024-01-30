@@ -18,6 +18,7 @@ app.get("/", async (req, res) => {
   res.redirect("/signIn");
 });
 
+
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
