@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const UserModel = require("../models/user");
 
 exports.createUser = async (req, res) => {
   const { email, password, tokenDevice } = req.body;
@@ -37,4 +38,9 @@ exports.updateUser = async (req, res) => {
   } else {
     res.status(404).json({ status: 404, message: "Không tìm thấy user" });
   }
+};
+exports.getUser = async (req, res) => {
+  const id = req.params.id;
+  let user = await User.findById(id).lean();
+  res.json(user);
 };
