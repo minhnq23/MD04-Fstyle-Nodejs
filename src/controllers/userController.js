@@ -3,8 +3,30 @@ const User = require("../models/user");
 const UserModel = require("../models/user");
 
 exports.createUser = async (req, res) => {
-  const { email, password, tokenDevice } = req.body;
-  const newUser = new User({ email, password, tokenDevice });
+  if (!req.body) {
+    return res.status(400).json({ error: "Missing request body" });
+  }
+  const {
+    name,
+    email,
+    password,
+    tokenDevice,
+    avatar,
+    address,
+    phone,
+    consigneeName,
+  } = req.body;
+  const newUser = new User({
+    name,
+    email,
+    password,
+    tokenDevice,
+    avatar,
+    address,
+    phone,
+    consigneeName,
+    isAdmin: false,
+  });
   console.log(newUser);
   await newUser
     .save()

@@ -1,11 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const app = express();
-const user = require("./models/user");
+const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
+const userApi = require("./src/api/userApi");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
+
+app.use(bodyParser.json());
 app.use("/", signInRouter);
+app.use("/", userApi);
 
 const PORT = 3000;
 const uri =
