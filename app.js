@@ -5,12 +5,14 @@ const app = express();
 const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
 const userApi = require("./src/api/userApi");
+const productsApi = require("./src/api/productApi");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use("/", signInRouter);
 app.use("/", userApi);
+app.use("/", productsApi);
 
 const PORT = 3000;
 const uri =
