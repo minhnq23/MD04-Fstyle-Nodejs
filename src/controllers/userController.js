@@ -3,6 +3,20 @@ const User = require("../models/user");
 const Cart = require("../models/cart");
 const UserModel = require("../models/user");
 
+exports.signIn = async (req, res) => {
+  const { email, password } = req.body;
+  const authUser = await UserModel.findOne({ email: email });
+  if (!authUser) {
+    // Handle case where user with the provided email is not found
+    return res.status(404).json({ message: "User not found" });
+  } else {
+    if (!(password == authUser.password)) {
+      return res.status(404).json({ message: "sai mật khẩu" });
+    }
+  }
+  res.json(authUser);
+};
+
 exports.createUser = async (req, res) => {
   const {
     name,
