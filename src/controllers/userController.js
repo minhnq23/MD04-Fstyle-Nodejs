@@ -28,6 +28,11 @@ exports.createUser = async (req, res) => {
     phone,
     consigneeName,
   } = req.body;
+
+  const authUser = await UserModel.findOne({ email: email });
+  if (authUser) {
+    return res.status(404).json({ message: "Email đã tồn tại" });
+  }
   const newUser = new User({
     name,
     email,
