@@ -1,11 +1,9 @@
 const express = require("express");
 const User = require("../models/user");
+const Cart = require("../models/cart");
 const UserModel = require("../models/user");
 
 exports.createUser = async (req, res) => {
-  if (!req.body) {
-    return res.status(400).json({ error: "Missing request body" });
-  }
   const {
     name,
     email,
@@ -27,14 +25,20 @@ exports.createUser = async (req, res) => {
     consigneeName,
     isAdmin: false,
   });
+
   console.log(newUser);
   await newUser
     .save()
-    .then(() => {
+    .then(async () => {
+      const id = newUser._id;
+      console.log("id user: ", id);
+      const newCart = new Cart({ idUser: id });
+      await newCart.save().then(() => console.log("add thành công"));
       res.status(201).json({
         status: 201,
         success: true,
         message: "Đã tạo mới người dùng thành công.",
+        _id: id,
         email: email,
         token: tokenDevice,
       });
@@ -61,8 +65,11 @@ exports.updateUser = async (req, res) => {
     res.status(404).json({ status: 404, message: "Không tìm thấy user" });
   }
 };
+
 exports.getUser = async (req, res) => {
   const id = req.params.id;
   let user = await User.findById(id).lean();
   res.json(user);
 };
+
+exports.createCart = async (req, res) => {};
