@@ -25,20 +25,20 @@ exports.createProduct = async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-  exports.updateProduct = async (req, res) => {
-    const _id = req.params.id;
-    const updates = req.body;
+};
+exports.updateProduct = async (req, res) => {
+  const _id = req.params.id;
+  const updates = req.body;
 
-    try {
-      const updatedProduct = await Product.findByIdAndUpdate(_id, updates, {
-        new: true,
-      });
-      if (!updatedProduct) {
-        return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-      }
-      res.json(updatedProduct);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(_id, updates, {
+      new: true,
+    });
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
-  };
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
