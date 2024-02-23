@@ -10,6 +10,7 @@ exports.getProduct = async (req, res) => {
 exports.createProduct = async (req, res) => {
   const product = new Product({
     name: req.body.name,
+    image64: req.body.image64,
     brand: req.body.brand,
     price: req.body.price,
     size: req.body.size,
