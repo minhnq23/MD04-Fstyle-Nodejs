@@ -21,6 +21,10 @@ const AddressSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
+  enabled: {
+    type: Boolean,
+    default: true,
+  },
 });
 const AddressModel = mongoose.model("Address", AddressSchema);
 module.exports = AddressModel;

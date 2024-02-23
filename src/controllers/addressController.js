@@ -49,7 +49,7 @@ exports.updateAddress = async function (req, res) {
 
 exports.getAddress = async function (req, res) {
   const id = req.params.id;
-  const listAddress = await Address.find({ idUser: id }).lean();
+  const listAddress = await Address.find({ idUser: id, enabled: true }).lean();
   if (listAddress) {
     res.status(201).json({
       status: 201,
@@ -59,5 +59,31 @@ exports.getAddress = async function (req, res) {
     res
       .status(404)
       .json({ status: 404, message: "Chưa có địa chỉ nào địa chỉ" });
+  }
+};
+exports.deleteAddress = async function (req, res) {
+  const userId = req.params.id;
+  const id = req.params.id_address;
+  const { homeNumber, street, district, city, phoneNumber, consigneeName } =
+    req.body;
+  const address = new Address({
+    idUser: userId,
+    homeNumber,
+    street,
+    district,
+    city,
+    phoneNumber,
+    consigneeName,
+    enabled: false,
+  });
+  const result = await Address.findOneAndUpdate({ _id: id }, address);
+  if (result) {
+    res.status(201).json({
+      status: 201,
+      message: "Khoa béo giục ít thôi",
+      information: address,
+    });
+  } else {
+    res.status(404).json({ status: 404, message: "Không tìm thấy địa chỉ" });
   }
 };
