@@ -3,12 +3,12 @@ const Address = require("../models/address");
 
 exports.addAddress = async (req, res) => {
   const idUser = req.params.id;
-  const { homeNumber, stress, district, city, phoneNumber, consigneeName } =
+  const { homeNumber, street, district, city, phoneNumber, consigneeName } =
     req.body;
   const result = new Address({
     idUser,
     homeNumber,
-    stress,
+    street,
     district,
     city,
     phoneNumber,
