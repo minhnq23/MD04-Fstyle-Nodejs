@@ -6,7 +6,7 @@ const userController = require("../controllers/userController");
 const User = require("../models/user");
 router.post("/api/user/post", userController.createUser);
 router.get("/api/user/:id", userController.getUser);
-router.get("/api/user/update/:id", userController.updateUser);
+router.put("/api/user/update/:id", userController.updateUser);
 router.post("/api/user/signin", userController.signIn);
 
 module.exports = router;
