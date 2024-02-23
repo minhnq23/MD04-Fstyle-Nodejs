@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 
-router.get("/api/products", productController.getProduct);
+// Định tuyến các yêu cầu đến các hàm xử lý tương ứng trong productController
+router.post("/api/products", productController.createProduct);
+router.put("/api/products/:id", productController.updateProduct);
 router.get("/api/products/:id", productController.getProduct);
-router.post("/api/products/post/:id", productController.createProduct);
-router.get("/api/products/update/:id", productController.updateProduct);
+router.get("/api/products", productController.getAllProducts);
 
 module.exports = router;
