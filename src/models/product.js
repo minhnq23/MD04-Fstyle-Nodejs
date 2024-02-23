@@ -24,10 +24,10 @@ const ProductSchema = new mongoose.Schema({
     type: "String",
     required: true,
   },
-  status: {
-    type: "String",
-    enum: ["still", "run out of"],
-    default: "still",
+  quantity: {
+    type: "Number",
+    required: true,
+    default: 0,
   },
   type: {
     type: "String",
