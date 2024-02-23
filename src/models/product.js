@@ -4,6 +4,9 @@ const ProductSchema = new mongoose.Schema({
     type: "String",
     required: true,
   },
+  image64: {
+    type: [String],
+  },
   brand: {
     type: "String",
     enum: ["Nike", "Adidas"],
