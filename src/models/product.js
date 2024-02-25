@@ -35,7 +35,12 @@ const ProductSchema = new mongoose.Schema({
     enum: ["Lazy shoes", "low-top shoes", "high neck shoes"],
     default: "Lazy shoes",
   },
-  description: String,
+  status: {
+    type: String,
+    enum: ["stocking", "out of stock"],
+    default: "stocking",
+  },
+  description: { type: String },
 });
 
 const ProductModel = mongoose.model("Product", ProductSchema);
