@@ -10,6 +10,7 @@ exports.createProduct = async (req, res) => {
     size,
     color,
     quantity,
+    status,
     type,
     description,
   } = req.body;
@@ -23,6 +24,7 @@ exports.createProduct = async (req, res) => {
       size,
       color,
       quantity,
+      status,
       type,
       description,
     });
@@ -44,7 +46,6 @@ exports.updateProduct = async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
       new: true,
-      runValidators: true, // This option ensures that Mongoose validators are run
     });
 
     if (!updatedProduct) {
