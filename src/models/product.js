@@ -35,7 +35,7 @@ const ProductSchema = new mongoose.Schema({
     enum: ["Lazy shoes", "low-top shoes", "high neck shoes"],
     default: "Lazy shoes",
   },
-  description: String,
+  description: { type: String },
 });
 
 const ProductModel = mongoose.model("Product", ProductSchema);
