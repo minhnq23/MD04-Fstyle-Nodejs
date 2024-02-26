@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 
-router.post("/api/products", productController.createProduct);
-router.put("/api/products/:id", productController.updateProduct);
-router.get("/api/products/get", productController.getAllProducts);
-router.get("/api/products/get/:id", productController.getProduct);
+router.get("/api/products", productController.getAllProducts);
+router.get("/api/products/:id", productController.getProduct);
+router.post("/api/products/post/:id", productController.createProduct);
+router.get("/api/products/update/:id_admin/:id", productController.updateProduct);
+
 module.exports = router;
