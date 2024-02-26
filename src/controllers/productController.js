@@ -1,7 +1,9 @@
 const express = require("express");
 const Product = require("../models/product");
+const UserModel = require("../models/user");
 
 exports.createProduct = async (req, res) => {
+  const id = req.params.id;
   const {
     name,
     image64,
@@ -14,7 +16,7 @@ exports.createProduct = async (req, res) => {
     description,
   } = req.body;
 
-  const product = new Product({
+  const newProduct = new Product({
     name,
     image64,
     brand,
@@ -25,16 +27,25 @@ exports.createProduct = async (req, res) => {
     type,
     description,
   });
-
-  try {
-    const newProduct = await product.save();
-    res.status(201).json({
-      status: 201,
-      message: "Product saved successfully",
-      product: newProduct,
-    });
-  } catch (error) {
-    res.status(400).json({ status: 400, message: error.message });
+  const admin = await UserModel.findById({ _id: id });
+  console.log(admin.isAdmin);
+  if (admin.isAdmin) {
+    newProduct
+      .save()
+      .then(async () => {
+        res.status(201).json({
+          status: 201,
+          message: "Product saved successfully",
+          product: newProduct,
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({ status: 400, message: err.message });
+      });
+  } else {
+    res
+      .status(404)
+      .json({ status: 404, message: "Bạn không có quyền truy cập " });
   }
 };
 
