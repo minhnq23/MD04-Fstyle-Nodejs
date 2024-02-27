@@ -7,6 +7,7 @@ const signInRouter = require("./src/routers/signIn");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const AddressApi = require("./src/api/addressApi");
+const imageApi = require("./src/api/imageApi");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
@@ -15,6 +16,7 @@ app.use("/", signInRouter);
 app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", productsApi);
+app.use("/", imageApi);
 
 const PORT = 3000;
 const uri =
