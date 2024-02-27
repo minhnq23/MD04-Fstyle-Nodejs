@@ -6,6 +6,7 @@ const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
+const categoryApi = require("./src/api/categoryApi");
 const AddressApi = require("./src/api/addressApi");
 const imageApi = require("./src/api/imageApi");
 app.set("views", __dirname + "/views");
@@ -15,12 +16,14 @@ app.use(bodyParser.json());
 app.use("/", signInRouter);
 app.use("/", userApi);
 app.use("/", AddressApi);
+app.use("/", categoryApi);
 app.use("/", productsApi);
 app.use("/", imageApi);
 
 const PORT = 3000;
 const uri =
-  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
+  // "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb://localhost:27017/test";
 //
 app.get("/", async (req, res) => {
   res.redirect("/signIn");
