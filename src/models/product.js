@@ -40,6 +40,10 @@ const ProductSchema = new mongoose.Schema({
     enum: ["stocking", "out of stock"],
     default: "stocking",
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
   description: { type: String },
 });
 
