@@ -13,6 +13,7 @@ exports.createProduct = async (req, res) => {
     color,
     quantity,
     status,
+    isFavorite,
     type,
     description,
   } = req.body;
@@ -25,6 +26,7 @@ exports.createProduct = async (req, res) => {
     size,
     color,
     quantity,
+    isFavorite,
     type,
     description,
   });
