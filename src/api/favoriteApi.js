@@ -3,12 +3,15 @@ const router = express.Router();
 const favoriteProductController = require("../controllers/favoriteProductController");
 
 router.get(
-  "/:userId/products",
+  "/users/:userId/products",
   favoriteProductController.getAllProductFavorites
 );
-router.post("/:userId/products", favoriteProductController.addProductFavorites);
+router.post(
+  "/users/:userId/products",
+  favoriteProductController.addProductFavorites
+);
 router.put(
-  "/:userId/products/:productId",
+  "/users/:userId/products/:productId",
   favoriteProductController.updateProductFavorites
 );
 
