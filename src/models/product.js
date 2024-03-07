@@ -10,8 +10,6 @@ const ProductSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
-    enum: ["Nike", "Adidas"],
-    default: "Nike",
   },
   price: {
     type: Number,
@@ -34,7 +32,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     enum: [
       "Giày chạy bộ",
-      "Giày tối giản",
+      "Giày lười",
       "Giày đi bộ",
       "Giày tennis",
       "Giày tập luyện đa năng",
