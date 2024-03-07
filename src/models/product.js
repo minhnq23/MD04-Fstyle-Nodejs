@@ -10,8 +10,6 @@ const ProductSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
-    enum: ["Nike", "Adidas"],
-    default: "Nike",
   },
   price: {
     type: Number,
@@ -32,12 +30,21 @@ const ProductSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["Lazy shoes", "low-top shoes", "high neck shoes"],
+    enum: [
+      "Giày chạy bộ",
+      "Giày lười",
+      "Giày đi bộ",
+      "Giày tennis",
+      "Giày tập luyện đa năng",
+      "Giày chạy địa hình",
+      "Giày cổ cao",
+      "Giày sneaker",
+    ],
     default: "Lazy shoes",
   },
   status: {
     type: String,
-    enum: ["stocking", "out of stock"],
+    enum: ["còn hàng", "hết hàng"],
     default: "stocking",
   },
   isFavorite: {
