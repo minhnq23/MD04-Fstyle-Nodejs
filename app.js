@@ -1,3 +1,11 @@
+var admin = require("firebase-admin");
+
+var serviceAccount = require("D:studyprojects\nodejsMD-04-Fstyle-Nodejs-Server\firebase_adminsdk.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -8,6 +16,7 @@ const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const AddressApi = require("./src/api/addressApi");
 const imageApi = require("./src/api/imageApi");
+const cartApi = require("./src/api/cartApi");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 

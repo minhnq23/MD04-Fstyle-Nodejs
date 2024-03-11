@@ -64,23 +64,12 @@ exports.getAddress = async function (req, res) {
 exports.deleteAddress = async function (req, res) {
   const userId = req.params.id;
   const id = req.params.id_address;
-  const { homeNumber, street, district, city, phoneNumber, consigneeName } =
-    req.body;
-  const address = new Address({
-    idUser: userId,
-    homeNumber,
-    street,
-    district,
-    city,
-    phoneNumber,
-    consigneeName,
-    enabled: false,
-  });
+  const address = req.body;
   const result = await Address.findOneAndUpdate({ _id: id }, address);
   if (result) {
     res.status(201).json({
       status: 201,
-      message: "Khoa béo giục ít thôi",
+      message: "Cập nhật thông tin địa chỉ thành công",
       information: address,
     });
   } else {

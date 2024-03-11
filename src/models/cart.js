@@ -5,18 +5,26 @@ const CartSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  listProduct: [
+  items: [
     {
       idProduct: {
         type: mongoose.Schema.Types.ObjectId,
+      },
+      name: {
+        type: String,
+        default: "Name Product",
       },
       quantity: {
         type: Number,
         default: 1,
       },
+      price: {
+        type: Number,
+        default: 0.0,
+      },
     },
   ],
-  total: {
+  totalCart: {
     type: Number,
     default: 0,
   },
