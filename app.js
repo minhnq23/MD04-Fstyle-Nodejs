@@ -26,6 +26,7 @@ app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", productsApi);
 app.use("/", imageApi);
+app.use("/", cartApi);
 
 const PORT = 3000;
 const uri =
