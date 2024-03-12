@@ -19,7 +19,7 @@ exports.addCart = async (req, res) => {
     existingProduct.quantity += product.quantity;
   } else {
     // Nếu sản phẩm chưa tồn tại, thêm mới vào mảng items
-    result.items.push({
+    result.listProduct.push({
       idProduct: product.id,
       name: productName,
       quantity: quantity,
@@ -33,8 +33,6 @@ exports.addCart = async (req, res) => {
   // Lưu giỏ hàng vào cơ sở dữ liệu
   await result.save();
   res.status(201).json({
-    status: 201,
-    message: "Sản phẩm đã được thêm vào giỏ hàng thành công.",
     cart: result,
   });
 
