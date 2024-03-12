@@ -1,6 +1,6 @@
 var admin = require("firebase-admin");
 
-var serviceAccount = require("D:studyprojects\nodejsMD-04-Fstyle-Nodejs-Server\firebase_adminsdk.json");
+var serviceAccount = require("./firebase_adminsdk.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
