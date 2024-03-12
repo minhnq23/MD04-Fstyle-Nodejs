@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const FavoriteProductSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
     required: true,
+    unique: true,
   },
   listProduct: [
     {
@@ -18,6 +18,13 @@ const FavoriteProductSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         default: 1,
+      },
+      price: {
+        type: Number,
+        default: 0.0,
+      },
+      image64: {
+        type: String,
       },
     },
   ],
