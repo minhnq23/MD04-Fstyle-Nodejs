@@ -5,7 +5,7 @@ const CartSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  items: [
+  listProduct: [
     {
       idProduct: {
         type: mongoose.Schema.Types.ObjectId,
