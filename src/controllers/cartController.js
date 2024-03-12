@@ -39,13 +39,12 @@ exports.removeProduct = async (req, res) => {
   let result = await Cart.findOne({
     idUser: userId,
   });
-  
+
   result.listProduct = result.listProduct.filter(
     (item) => item.idProduct.toString() !== productIdToRemove
   );
   result.totalCart = result.listProduct.reduce(
-    (total, item) => total + item.quantity * item.price,
-    0
+    (total, item) => total + item.quantity * item.price
   );
 
   await result.save();
