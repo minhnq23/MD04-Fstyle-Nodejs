@@ -25,6 +25,8 @@ const FavoriteProductSchema = new mongoose.Schema({
       },
       image64: {
         type: String,
+        default:
+          "https://images.pexels.com/photos/609771/pexels-photo-609771.jpeg?auto=compress&cs=tinysrgb&w=600",
       },
     },
   ],
