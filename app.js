@@ -14,6 +14,7 @@ const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
+const favoritesApi = require("./src/api/favoriteApi");
 const AddressApi = require("./src/api/addressApi");
 const imageApi = require("./src/api/imageApi");
 const cartApi = require("./src/api/cartApi");
@@ -26,6 +27,7 @@ app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", productsApi);
 app.use("/", imageApi);
+app.use("/", favoritesApi);
 app.use("/", cartApi);
 
 const PORT = 3000;
