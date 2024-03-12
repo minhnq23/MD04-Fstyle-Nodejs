@@ -11,6 +11,10 @@ const FavoriteProductSchema = new mongoose.Schema({
       idProduct: {
         type: mongoose.Schema.Types.ObjectId,
       },
+      name: {
+        type: String,
+        default: "Name",
+      },
       quantity: {
         type: Number,
         default: 1,
