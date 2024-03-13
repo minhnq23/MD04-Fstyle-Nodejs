@@ -11,8 +11,6 @@ const ProductSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
-    enum: ["Nike", "Adidas"],
-    default: "Nike",
   },
   price: {
     type: Number,
@@ -33,13 +31,11 @@ const ProductSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["Lazy shoes", "low-top shoes", "high neck shoes"],
-    default: "Lazy shoes",
+    required: true,
   },
-  status: {
-    type: String,
-    enum: ["stocking", "out of stock"],
-    default: "stocking",
+  isFavorite: {
+    type: Boolean,
+    default: false,
   },
   description: { type: String },
   category: {

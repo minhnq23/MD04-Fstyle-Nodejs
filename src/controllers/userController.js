@@ -4,7 +4,7 @@ const Cart = require("../models/cart");
 const UserModel = require("../models/user");
 
 exports.signIn = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, tokenDevice } = req.body;
   const authUser = await UserModel.findOne({ email: email });
   if (!authUser) {
     // Handle case where user with the provided email is not found
@@ -14,6 +14,9 @@ exports.signIn = async (req, res) => {
       return res.status(404).json({ message: "sai mật khẩu" });
     }
   }
+
+  authUser.tokenDevice = tokenDevice;
+  await authUser.save();
   res.json(authUser);
 };
 

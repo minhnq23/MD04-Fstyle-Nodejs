@@ -3,16 +3,65 @@ const Cart = require("../models/cart");
 const UserModel = require("../models/user");
 
 exports.addCart = async (req, res) => {
-  const idUser = req.params.id;
-  const cartUpdate = req.body;
-  const result = await Cart.findOneAndUpdate(idUser, cartUpdate);
-  if (result) {
-    res.status(201).json({
-      status: 201,
-      message: "Đã thêm sản phẩm thành công",
-      user: result,
-    });
+  const userId = req.params.id_user;
+  console.log(userId);
+  const product = req.body;
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
+  console.log(result);
+  const existingProduct = result.listProduct.find(
+    (item) => item.idProduct.toString() === product.id
+  );
+
+  if (existingProduct) {
+    existingProduct.quantity += product.quantity;
   } else {
-    res.status(404).json({ status: 404, message: "Không thêm được sản phẩm" });
+    result.listProduct.push({
+      idProduct: product.id,
+      name: productName,
+      quantity: quantity,
+      price: price,
+    });
+  }
+
+  result.totalCart += product.quantity * product.price;
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
+  });
+};
+exports.removeProduct = async (req, res) => {
+  const userId = req.params.id_user;
+  const productId = req.params.id_product;
+  console.log(userId);
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
+
+  result.listProduct = result.listProduct.filter(
+    (item) => item.idProduct.toString() !== productIdToRemove
+  );
+  result.totalCart = result.listProduct.reduce(
+    (total, item) => total + item.quantity * item.price
+  );
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
+  });
+};
+
+exports.getCart = async (req, res) => {
+  const userId = req.params.id_user;
+  let result = await Cart.findOne({
+    idUser: userId,
+  }).lean();
+
+  if (result) {
+    res.json(result);
+  } else {
+    res.status(404).json({ status: 404, message: "Không tìm thấy giỏ hàng" });
   }
 };
