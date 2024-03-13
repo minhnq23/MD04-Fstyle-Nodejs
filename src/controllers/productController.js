@@ -1,10 +1,11 @@
 const express = require("express");
 const Product = require("../models/product");
 const UserModel = require("../models/user");
+const Category = require("../models/category");
 
 exports.createProduct = async (req, res) => {
-  const id = req.params.id;
   const {
+    idAdmin,
     name,
     image64,
     brand,
@@ -16,8 +17,15 @@ exports.createProduct = async (req, res) => {
     isFavorite,
     type,
     description,
+    categoryId,
   } = req.body;
-
+  //Check có tồn tại category không
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    return res
+      .status(404)
+      .json({ status: 404, message: "Không tìm thấy category" });
+  }
   const newProduct = new Product({
     name,
     image64,
@@ -29,8 +37,9 @@ exports.createProduct = async (req, res) => {
     isFavorite,
     type,
     description,
+    category: categoryId,
   });
-  const admin = await UserModel.findById({ _id: id });
+  const admin = await UserModel.findById({ _id: idAdmin });
   console.log(admin.isAdmin);
   if (admin.isAdmin) {
     newProduct
@@ -53,15 +62,26 @@ exports.createProduct = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-  const productId = req.params.id;
-  const idAdmin = req.params.id_admin;
-  const updates = req.body;
-  const admin = await UserModel.findById({ _id: idAdmin });
-  console.log(admin.isAdmin);
-  if (admin.isAdmin) {
-    const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
-      new: true,
-    });
+  try {
+    const productId = req.params.id;
+    const { idAdmin, ...updates } = req.body; // Lấy tất cả các trường cần cập nhật từ body trừ idAdmin
+
+    // Kiểm tra xem người dùng có quyền admin không
+    const admin = await UserModel.findById(idAdmin);
+    if (!admin || !admin.isAdmin) {
+      return res
+        .status(403)
+        .json({ status: 403, message: "Bạn không có quyền truy cập" });
+    }
+
+    // Thực hiện cập nhật sản phẩm
+    const updatedProduct = await Product.findByIdAndUpdate(
+      { _id: productId },
+      updates,
+      {
+        new: true,
+      }
+    );
 
     if (!updatedProduct) {
       return res
@@ -71,32 +91,12 @@ exports.updateProduct = async (req, res) => {
 
     res.status(200).json({
       status: 200,
-      message: "Sản phẩm cập nhật thành công",
+      message: "Sản phẩm đã được cập nhật thành công",
       product: updatedProduct,
     });
-  } else {
-    res
-      .status(404)
-      .json({ status: 404, message: "Bạn không có quyền truy cập " });
+  } catch (error) {
+    res.status(400).json({ status: 400, message: error.message });
   }
-
-  // try {
-  //   const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
-  //     new: true,
-  //   });
-  //   if (!updatedProduct) {
-  //     return res
-  //       .status(404)
-  //       .json({ status: 404, message: "Không tìm thấy sản phẩm" });
-  //   }
-  //   res.status(200).json({
-  //     status: 200,
-  //     message: "Sản phẩm cập nhật thành công",
-  //     product: updatedProduct,
-  //   });
-  // } catch (error) {
-  //   res.status(400).json({ status: 400, message: error.message });
-  // }
 };
 
 exports.getAllProducts = async (req, res) => {
