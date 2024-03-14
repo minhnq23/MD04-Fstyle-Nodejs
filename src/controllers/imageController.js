@@ -19,3 +19,4 @@ exports.imageUser = async (req, res) => {
   // Send the buffer as the response
   res.end(buffer);
 };
+exports.imagesProduct = async (req, res) => {};
