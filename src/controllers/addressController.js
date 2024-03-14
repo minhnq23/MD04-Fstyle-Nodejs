@@ -13,6 +13,7 @@ exports.addAddress = async (req, res) => {
     city,
     phoneNumber,
     consigneeName,
+    isDefault: false,
   });
 
   await result

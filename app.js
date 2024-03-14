@@ -41,8 +41,8 @@ const registrationToken = "your-device-registration-token"; // replace with the 
 
 const message = {
   data: {
-    key1: "value1",
-    key2: "value2",
+    key1: "hihi",
+    key2: "haha",
   },
   token: registrationToken,
 };
