@@ -14,7 +14,7 @@ exports.getFavoriteProducts = async (req, res) => {
 
 exports.addProductToFavorite = async (req, res) => {
   const userId = req.params.userId;
-  const { idProduct, name, quantity, price, image64 } = req.body;
+  const { idProduct, name, quantity, price, defaultImage } = req.body;
 
   try {
     let favoriteProducts = await FavoriteProduct.findOne({ userId });
@@ -28,7 +28,7 @@ exports.addProductToFavorite = async (req, res) => {
       name,
       quantity,
       price,
-      image64,
+      defaultImage,
     });
     await favoriteProducts.save();
 
