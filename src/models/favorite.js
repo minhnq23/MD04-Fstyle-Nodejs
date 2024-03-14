@@ -13,20 +13,15 @@ const FavoriteProductSchema = new mongoose.Schema({
       },
       name: {
         type: String,
-        default: "Name",
       },
       quantity: {
         type: Number,
-        default: 1,
       },
       price: {
         type: Number,
-        default: 0.0,
       },
-      image64: {
+      defaultImage: {
         type: String,
-        default:
-          "https://images.pexels.com/photos/609771/pexels-photo-609771.jpeg?auto=compress&cs=tinysrgb&w=600",
       },
     },
   ],
