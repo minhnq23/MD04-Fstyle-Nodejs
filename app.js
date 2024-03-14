@@ -37,25 +37,25 @@ const uri =
 app.get("/", async (req, res) => {
   res.redirect("/signIn");
 });
-const registrationToken = "your-device-registration-token"; // replace with the actual device token
+// const registrationToken = "your-device-registration-token"; // replace with the actual device token
 
-const message = {
-  data: {
-    key1: "hihi",
-    key2: "haha",
-  },
-  token: registrationToken,
-};
+// const message = {
+//   data: {
+//     key1: "hihi",
+//     key2: "haha",
+//   },
+//   token: registrationToken,
+// };
 
-admin
-  .messaging()
-  .send(message)
-  .then((response) => {
-    console.log("Successfully sent message:", response);
-  })
-  .catch((error) => {
-    console.error("Error sending message:", error);
-  });
+// admin
+//   .messaging()
+//   .send(message)
+//   .then((response) => {
+//     console.log("Successfully sent message:", response);
+//   })
+//   .catch((error) => {
+//     console.error("Error sending message:", error);
+//   });
 
 app.listen(PORT, async () => {
   console.log(`Server started on port ${PORT}`);
