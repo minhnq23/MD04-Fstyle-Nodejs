@@ -14,13 +14,16 @@ const CartSchema = new mongoose.Schema({
         type: String,
         default: "Name Product",
       },
-      quantity: {
+      soLuong: {
         type: Number,
         default: 1,
       },
       price: {
         type: Number,
         default: 0.0,
+      },
+      imageDefault: {
+        type: String,
       },
     },
   ],
