@@ -9,7 +9,8 @@ exports.addCart = async (req, res) => {
   let result = await Cart.findOne({
     idUser: userId,
   });
-  console.log(result);
+
+  console.log("user", result);
   const existingProduct = result.listProduct.find(
     (item) => item.idProduct.toString() === product.id
   );
@@ -19,11 +20,11 @@ exports.addCart = async (req, res) => {
   } else {
     result.listProduct.push({
       idProduct: product.id,
-      name: productName,
-      soLuong: soLuong,
-      size: size,
-      price: price,
-      imageDefault: imageDefault,
+      name: product.name,
+      soLuong: product.soLuong,
+      size: product.size,
+      price: product.price,
+      imageDefault: product.imageDefault,
     });
   }
 
