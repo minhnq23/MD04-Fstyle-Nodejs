@@ -4,8 +4,8 @@ const UserModel = require("../models/user");
 
 exports.createCategory = async (req, res) => {
   try {
-    const { idAdmin, name, description } = req.body;
-    const admin = await UserModel.findById({_id: idAdmin});
+    const { idAdmin, name, image } = req.body;
+    const admin = await UserModel.findById({ _id: idAdmin });
     console.log(admin.isAdmin);
     if (admin.isAdmin) {
       const existingCategory = await Category.findOne({ name });
@@ -18,7 +18,7 @@ exports.createCategory = async (req, res) => {
 
       const newCategory = new Category({
         name,
-        description,
+        image,
       });
 
       await newCategory.save();
