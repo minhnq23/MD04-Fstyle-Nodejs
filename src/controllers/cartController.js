@@ -15,18 +15,19 @@ exports.addCart = async (req, res) => {
   );
 
   if (existingProduct) {
-    existingProduct.quantity += product.quantity;
+    existingProduct.soLuong += product.soLuong;
   } else {
     result.listProduct.push({
       idProduct: product.id,
       name: productName,
-      quantity: quantity,
+      soLuong: soLuong,
+      size: size,
       price: price,
       imageDefault: imageDefault,
     });
   }
 
-  result.totalCart += product.quantity * product.price;
+  result.totalCart += product.soLuong * product.price;
 
   await result.save();
   res.status(201).json({
@@ -45,7 +46,7 @@ exports.removeProduct = async (req, res) => {
     (item) => item.idProduct.toString() !== productIdToRemove
   );
   result.totalCart = result.listProduct.reduce(
-    (total, item) => total + item.quantity * item.price
+    (total, item) => total + item.soLuong * item.price
   );
 
   await result.save();
