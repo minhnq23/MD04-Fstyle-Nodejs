@@ -12,7 +12,7 @@ exports.addCart = async (req, res) => {
 
   console.log("user", result);
   const existingProduct = result.listProduct.find(
-    (item) => item.idProduct.toString() === product.id
+    (item) => item.idProduct === product.id
   );
 
   if (existingProduct) {
@@ -44,7 +44,7 @@ exports.removeProduct = async (req, res) => {
   });
 
   result.listProduct = result.listProduct.filter(
-    (item) => item.idProduct.toString() !== productIdToRemove
+    (item) => item.idProduct !== productIdToRemove
   );
   result.totalCart = result.listProduct.reduce(
     (total, item) => total + item.soLuong * item.price
@@ -57,14 +57,28 @@ exports.removeProduct = async (req, res) => {
 };
 
 exports.getCart = async (req, res) => {
-  const userId = req.params.id_user;
-  let result = await Cart.findOne({
-    idUser: userId,
-  }).lean();
+  try {
+    const userId = req.params.id_user;
+    console.log("userId: ", userId);
 
-  if (result) {
-    res.json(result);
-  } else {
-    res.status(404).json({ status: 404, message: "Không tìm thấy giỏ hàng" });
+    // Look up the cart based on userId
+    const cart = await Cart.findOne({ idUser: userId });
+
+    if (cart) {
+      res.json(cart); // If found, return the cart
+    } else {
+      // If not found, return a 404 error
+      res.status(404).json({
+        status: 404,
+        message: "Không tìm thấy giỏ hàng",
+      });
+    }
+  } catch (error) {
+    // If there's any error during the process, return a 500 error
+    console.error("Error retrieving cart:", error);
+    res.status(500).json({
+      status: 500,
+      message: "Đã xảy ra lỗi khi lấy thông tin giỏ hàng",
+    });
   }
 };
