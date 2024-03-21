@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const CartSchema = new mongoose.Schema({
   idUser: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     unique: true,
   },
   listProduct: [
@@ -35,5 +34,5 @@ const CartSchema = new mongoose.Schema({
     default: 0,
   },
 });
-const CartModel = mongoose.model("Cart", CartSchema);
+const CartModel = mongoose.model("carts", CartSchema);
 module.exports = CartModel;
