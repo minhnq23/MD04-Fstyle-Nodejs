@@ -1,6 +1,7 @@
 const express = require("express");
 const Cart = require("../models/cart");
 const UserModel = require("../models/user");
+const mongoose = require("mongoose");
 
 exports.addCart = async (req, res) => {
   const userId = req.params.id_user;
@@ -10,16 +11,19 @@ exports.addCart = async (req, res) => {
     idUser: userId,
   });
 
+  console.log(product);
   console.log("user", result);
   const existingProduct = result.listProduct.find(
-    (item) => item.idProduct === product.id
+    (item) => item.idProduct === product.idProduct
   );
 
   if (existingProduct) {
-    existingProduct.soLuong += product.soLuong;
+    let num = parseInt(existingProduct.soLuong) + parseInt(product.soLuong);
+    existingProduct.soLuong = num;
+    console.log("trùng sản phẩm");
   } else {
     result.listProduct.push({
-      idProduct: product.id,
+      idProduct: product.idProduct + "",
       name: product.name,
       soLuong: product.soLuong,
       size: product.size,
@@ -44,11 +48,9 @@ exports.removeProduct = async (req, res) => {
   });
 
   result.listProduct = result.listProduct.filter(
-    (item) => item.idProduct !== productIdToRemove
+    (item) => item.idProduct == productId
   );
-  result.totalCart = result.listProduct.reduce(
-    (total, item) => total + item.soLuong * item.price
-  );
+  console.log(result.listProduct);
 
   await result.save();
   res.status(201).json({
