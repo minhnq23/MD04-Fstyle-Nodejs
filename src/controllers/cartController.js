@@ -48,7 +48,7 @@ exports.removeProduct = async (req, res) => {
   });
 
   result.listProduct = result.listProduct.filter(
-    (item) => item.idProduct == productId
+    (item) => item.idProduct != productId
   );
   console.log(result.listProduct);
 
@@ -83,4 +83,13 @@ exports.getCart = async (req, res) => {
       message: "Đã xảy ra lỗi khi lấy thông tin giỏ hàng",
     });
   }
+};
+
+exports.reduce = async () => {
+  const userId = req.params.id_user;
+  const productId = req.params.id_product;
+  console.log(userId);
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
 };
