@@ -37,6 +37,11 @@ const ProductSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  status: {
+    type: String,
+    enum: ["Còn hàng", "Hết hàng"],
+    default: "Còn hàng",
+  },
   description: { type: String },
   category: {
     type: mongoose.Schema.Types.ObjectId,
