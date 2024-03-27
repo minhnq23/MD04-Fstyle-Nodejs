@@ -22,18 +22,15 @@ exports.addProductToFavorite = async (req, res) => {
     if (!favoriteProducts) {
       favoriteProducts = new FavoriteProduct({ userId, listProduct: [] });
     } else {
-      const existingProductIndex = favoriteProducts.listProduct.findIndex(
-        (product) => product.idProduct.toString() === idProduct
+      const existingProduct = favoriteProducts.listProduct.find(
+        (item) => item.idProduct === idProduct
       );
-      if (existingProductIndex !== -1) {
+
+      if (existingProduct) {
         return res
           .status(400)
           .json({ message: "Sản phẩm đã tồn tại trong danh sách yêu thích" });
       }
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(idProduct)) {
-      return res.status(400).json({ message: "Id sản phẩm không hợp lệ" });
     }
 
     favoriteProducts.listProduct.push({
@@ -43,6 +40,7 @@ exports.addProductToFavorite = async (req, res) => {
       price,
       defaultImage,
     });
+
     await favoriteProducts.save();
 
     res
