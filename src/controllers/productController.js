@@ -4,77 +4,70 @@ const UserModel = require("../models/user");
 const Category = require("../models/category");
 
 exports.createProduct = async (req, res) => {
-  const {
-    idAdmin,
-    name,
-    image64,
-    brand,
-    price,
-    size,
-    color,
-    quantity,
-    status,
-    isFavorite,
-    type,
-    description,
-    categoryId,
-  } = req.body;
-  //Check có tồn tại category không
-  const category = await Category.findById(categoryId);
-  if (!category) {
-    return res
-      .status(404)
-      .json({ status: 404, message: "Không tìm thấy category" });
-  }
-  const newProduct = new Product({
-    name,
-    image64,
-    brand,
-    price,
-    size,
-    color,
-    quantity,
-    isFavorite,
-    type,
-    description,
-    category: categoryId,
-  });
-  const admin = await UserModel.findById({ _id: idAdmin });
-  console.log(admin.isAdmin);
-  if (admin.isAdmin) {
-    newProduct
-      .save()
-      .then(async () => {
-        res.status(201).json({
-          status: 201,
-          message: "Product saved successfully",
-          product: newProduct,
-        });
-      })
-      .catch((err) => {
-        res.status(400).json({ status: 400, message: err.message });
-      });
-  } else {
-    res
-      .status(404)
-      .json({ status: 404, message: "Bạn không có quyền truy cập " });
+  try {
+    const {
+      name,
+      image64,
+      brand,
+      price,
+      size,
+      color,
+      quantity,
+      type,
+      description,
+      categoryId,
+    } = req.body;
+
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Không tìm thấy category" });
+    }
+
+    const newProduct = new Product({
+      name,
+      image64,
+      brand,
+      price,
+      size,
+      color,
+      quantity,
+      type,
+      description,
+      category: categoryId,
+      status: "Còn hàng",
+    });
+
+    await newProduct.save();
+
+    res.status(201).json({
+      status: 201,
+      message: "Sản phẩm được thêm thành công",
+      product: newProduct,
+    });
+  } catch (error) {
+    res.status(400).json({ status: 400, message: error.message });
   }
 };
 
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const { idAdmin, ...updates } = req.body; // Lấy tất cả các trường cần cập nhật từ body trừ idAdmin
+    const { idAdmin, status, ...updates } = req.body;
 
-    // Kiểm tra xem người dùng có quyền admin không
     const admin = await UserModel.findById(idAdmin);
     if (!admin || !admin.isAdmin) {
       return res
         .status(403)
         .json({ status: 403, message: "Bạn không có quyền truy cập" });
     }
+    if (status && !["Còn hàng", "Hết hàng"].includes(status)) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "Giá trị của status không hợp lệ" });
+    }
 
-    // Thực hiện cập nhật sản phẩm
     const updatedProduct = await Product.findByIdAndUpdate(
       { _id: productId },
       updates,
@@ -82,6 +75,16 @@ exports.updateProduct = async (req, res) => {
         new: true,
       }
     );
+
+    console.log("Updated product quantity:", updatedProduct.quantity);
+    if (updatedProduct.quantity === 0) {
+      updatedProduct.status = "Hết hàng";
+    } else {
+      updatedProduct.status = "Còn Hàng";
+    }
+    console.log("Updated product status:", updatedProduct.status);
+
+    await updatedProduct.save();
 
     if (!updatedProduct) {
       return res
@@ -121,6 +124,24 @@ exports.getProduct = async (req, res) => {
       res.status(200).json({
         status: 200,
         product: product,
+      });
+    } else {
+      res.status(404).json({ status: 404, message: "Không tìm thấy sản phẩm" });
+    }
+  } catch (error) {
+    res.status(400).json({ status: 400, message: error.message });
+  }
+};
+exports.deleteProduct = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (deletedProduct) {
+      res.status(200).json({
+        status: 200,
+        message: "Xoá sản phẩm thành công",
+        product: deletedProduct,
       });
     } else {
       res.status(404).json({ status: 404, message: "Không tìm thấy sản phẩm" });
