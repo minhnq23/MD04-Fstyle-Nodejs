@@ -14,6 +14,7 @@ exports.getFavoriteProducts = async (req, res) => {
 
 exports.addProductToFavorite = async (req, res) => {
   const userId = req.params.userId;
+  const product = req.body;
   const { idProduct, name, quantity, price, defaultImage } = req.body;
 
   try {
@@ -23,9 +24,8 @@ exports.addProductToFavorite = async (req, res) => {
       favoriteProducts = new FavoriteProduct({ userId, listProduct: [] });
     } else {
       const existingProduct = favoriteProducts.listProduct.find(
-        (item) => item.idProduct === idProduct
+        (item) => String(item.idProduct) === String(product.idProduct)
       );
-
       if (existingProduct) {
         return res
           .status(400)

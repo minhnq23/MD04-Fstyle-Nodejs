@@ -13,7 +13,7 @@ exports.createProduct = async (req, res) => {
       size,
       color,
       quantity,
-      type,
+
       description,
       categoryId,
     } = req.body;
@@ -33,7 +33,7 @@ exports.createProduct = async (req, res) => {
       size,
       color,
       quantity,
-      type,
+
       description,
       category: categoryId,
       status: "Còn hàng",
