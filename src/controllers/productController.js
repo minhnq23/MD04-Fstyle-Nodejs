@@ -13,7 +13,6 @@ exports.createProduct = async (req, res) => {
       size,
       color,
       quantity,
-
       description,
       categoryId,
     } = req.body;
