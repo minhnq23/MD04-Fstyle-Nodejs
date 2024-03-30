@@ -1,21 +1,51 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  idUser: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-  idAddress: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
+  diaChi: {
+    type: String,
     required: true,
   },
-  quantity: { type: Number, default: 1 },
-  created: {
+  tienHang: {
+    type: Number,
+    required: true,
+  },
+  tenKhachHang: {
+    type: String,
+    required: true,
+  },
+  soLuong: {
+    type: Number,
+    default: 1,
+  },
+  tongTienHang: {
+    type: Number,
+    required: true,
+  },
+  soDienThoai: {
+    type: String,
+    required: true,
+  },
+  phuongThucThanhToan: {
+    type: String,
+    enum: ["COD", "Sandbox"],
+    default: "COD",
+  },
+  thoiGianDatHang: {
     type: Date,
     default: Date.now,
+  },
+  thoiGianNhanHang: {
+    type: Date,
+  },
+  thoiGianHuy: {
+    type: Date,
+  },
+  thoiGianDangGiao: {
+    type: Date,
+  },
+  trangThai: {
+    type: String,
+    required: true,
   },
 });
 

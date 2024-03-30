@@ -1,32 +1,23 @@
 const express = require("express");
-const Product = require("../models/product");
-const UserModel = require("../models/user");
 const Order = require("../models/orders");
 
 exports.createOrder = async (req, res) => {
   try {
-    const { idUser, idAddress, product, quantity, created } = req.body;
-    const user = await UserModel.findById(idUser);
-    if (!user) {
-      return res.status(404).json({
-        status: 404,
-        message: "User not found",
-      });
-    }
-    const existingProduct = await Product.findById(product);
-    if (!existingProduct) {
-      return res.status(404).json({
-        status: 404,
-        message: "Product not found",
-      });
-    }
+    const { diaChi, tienHang, tenKhachHang, soLuong, tongTienHang, soDienThoai, phuongThucThanhToan, thoiGianDatHang, thoiGianNhanHang, thoiGianHuy, thoiGianDangGiao, trangThai } = req.body;
 
     const newOrder = new Order({
-      idUser,
-      idAddress,
-      product,
-      quantity,
-      created,
+      diaChi,
+      tienHang,
+      tenKhachHang,
+      soLuong,
+      tongTienHang,
+      soDienThoai,
+      phuongThucThanhToan,
+      thoiGianDatHang,
+      thoiGianNhanHang,
+      thoiGianHuy,
+      thoiGianDangGiao,
+      trangThai,
     });
 
     await newOrder.save();
@@ -40,6 +31,7 @@ exports.createOrder = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
@@ -52,27 +44,28 @@ exports.getAllOrders = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
-exports.getOrdersByUserId = async (req, res) => {
+
+exports.getOrderByOrderId = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await UserModel.findById(userId);
-    if (!user) {
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId);
+    if (!order) {
       return res.status(404).json({
         status: 404,
-        message: "User not found",
+        message: "Order not found",
       });
     }
-    const orders = await Order.find({ idUser: userId });
-
     res.status(200).json({
       status: 200,
-      message: "Orders retrieved successfully for user with ID " + userId,
-      orders: orders,
+      message: "Order retrieved successfully",
+      order: order,
     });
   } catch (error) {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+
+
 exports.deleteOrder = async (req, res) => {
   try {
     const orderId = req.params.id;
