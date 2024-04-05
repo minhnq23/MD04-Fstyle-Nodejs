@@ -19,6 +19,7 @@ const favoritesApi = require("./src/api/favoriteApi");
 const AddressApi = require("./src/api/addressApi");
 const imageApi = require("./src/api/imageApi");
 const cartApi = require("./src/api/cartApi");
+const orderApi = require("./src/api/orderApi");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
@@ -31,6 +32,7 @@ app.use("/", productsApi);
 app.use("/", imageApi);
 app.use("/", favoritesApi);
 app.use("/", cartApi);
+app.use("/",orderApi);
 
 const PORT = 3000;
 const uri =
