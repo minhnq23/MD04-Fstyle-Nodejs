@@ -50,7 +50,16 @@ exports.removeProduct = async (req, res) => {
   result.listProduct = result.listProduct.filter(
     (item) => item.idProduct != productId
   );
+
+  let total = 0;
+  for (let i = 0; i < result.listProduct.length; i++) {
+    const product = result.listProduct[i];
+    total += product.price * product.soLuong;
+    console.log(product);
+  }
+
   console.log(result.listProduct);
+  result.totalCart = total;
 
   await result.save();
   res.status(201).json({
@@ -85,11 +94,74 @@ exports.getCart = async (req, res) => {
   }
 };
 
-exports.reduce = async () => {
+exports.reduce = async (req, res) => {
   const userId = req.params.id_user;
   const productId = req.params.id_product;
   console.log(userId);
   let result = await Cart.findOne({
     idUser: userId,
+  });
+  console.log("result: ", result);
+  const product = result.listProduct.find(
+    (item) => item.idProduct === productId
+  );
+  console.log("product: ", product);
+  if (product.soLuong > 1) {
+    product.soLuong -= 1;
+  }
+  console.log("số lượng: ", product.soLuong);
+  console.log(" new product: ", product);
+  console.log("====================================");
+  console.log(result);
+  console.log("====================================");
+  let total = 0;
+
+  for (let i = 0; i < result.listProduct.length; i++) {
+    const product = result.listProduct[i];
+    total += product.price * product.soLuong;
+    console.log(product);
+  }
+
+  console.log(result.listProduct);
+  result.totalCart = total;
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
+  });
+};
+
+exports.increase = async (req, res) => {
+  const userId = req.params.id_user;
+  const productId = req.params.id_product;
+  console.log(userId);
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
+  console.log("result: ", result);
+  const product = result.listProduct.find(
+    (item) => item.idProduct === productId
+  );
+  console.log("product: ", product);
+  product.soLuong += 1;
+  console.log("số lượng: ", product.soLuong);
+  console.log(" new product: ", product);
+  console.log("====================================");
+  console.log(result);
+  console.log("====================================");
+  let total = 0;
+
+  for (let i = 0; i < result.listProduct.length; i++) {
+    const product = result.listProduct[i];
+    total += product.price * product.soLuong;
+    console.log(product);
+  }
+
+  console.log(result.listProduct);
+  result.totalCart = total;
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
   });
 };
