@@ -24,15 +24,16 @@ exports.createProduct = async (req, res) => {
         .json({ status: 404, message: "Không tìm thấy category" });
     }
 
+    const sizeArray = size.map(Number); // Chuyển đổi mảng chuỗi thành mảng số
+
     const newProduct = new Product({
       name,
       image64,
       brand,
       price,
-      size,
+      size: sizeArray, // Sử dụng mảng số đã chuyển đổi
       color,
       quantity,
-
       description,
       category: categoryId,
       status: "Còn hàng",
@@ -49,7 +50,6 @@ exports.createProduct = async (req, res) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
-
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
