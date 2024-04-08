@@ -54,13 +54,6 @@ exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const { idAdmin, status, ...updates } = req.body;
-
-    const admin = await UserModel.findById(idAdmin);
-    if (!admin || !admin.isAdmin) {
-      return res
-        .status(403)
-        .json({ status: 403, message: "Bạn không có quyền truy cập" });
-    }
     if (status && !["Còn hàng", "Hết hàng"].includes(status)) {
       return res
         .status(400)
