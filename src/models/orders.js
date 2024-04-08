@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  diaChi: {
+  address: {
     type: String,
     required: true,
   },
@@ -9,41 +9,41 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tenKhachHang: {
+  nameUser: {
     type: String,
     required: true,
   },
-  soLuong: {
+  quantity: {
     type: Number,
     default: 1,
   },
-  tongTienHang: {
+  totalPrice: {
     type: Number,
     required: true,
   },
-  soDienThoai: {
+  phone: {
     type: String,
     required: true,
   },
-  phuongThucThanhToan: {
+  paymentMethods: {
     type: String,
     enum: ["COD", "Sandbox"],
     default: "COD",
   },
-  thoiGianDatHang: {
+  timeOrder: {
     type: Date,
     default: Date.now,
   },
-  thoiGianNhanHang: {
+  timeDelivery: {
     type: Date,
   },
-  thoiGianHuy: {
+  timeCancel: {
     type: Date,
   },
   thoiGianDangGiao: {
     type: Date,
   },
-  trangThai: {
+  status: {
     type: String,
     required: true,
   },
