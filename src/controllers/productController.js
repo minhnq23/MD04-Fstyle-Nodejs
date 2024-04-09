@@ -14,6 +14,7 @@ exports.createProduct = async (req, res) => {
       color,
       quantity,
       description,
+      status,
       categoryId,
     } = req.body;
 
@@ -36,7 +37,7 @@ exports.createProduct = async (req, res) => {
       quantity,
       description,
       category: categoryId,
-      status: "Còn hàng",
+      status,
     });
 
     await newProduct.save();
@@ -53,19 +54,7 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const { idAdmin, status, ...updates } = req.body;
-
-    const admin = await UserModel.findById(idAdmin);
-    if (!admin || !admin.isAdmin) {
-      return res
-        .status(403)
-        .json({ status: 403, message: "Bạn không có quyền truy cập" });
-    }
-    if (status && !["Còn hàng", "Hết hàng"].includes(status)) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Giá trị của status không hợp lệ" });
-    }
+    const updates = req.body;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       { _id: productId },
@@ -74,14 +63,6 @@ exports.updateProduct = async (req, res) => {
         new: true,
       }
     );
-
-    console.log("Updated product quantity:", updatedProduct.quantity);
-    if (updatedProduct.quantity === 0) {
-      updatedProduct.status = "Hết hàng";
-    } else {
-      updatedProduct.status = "Còn Hàng";
-    }
-    console.log("Updated product status:", updatedProduct.status);
 
     await updatedProduct.save();
 
