@@ -3,21 +3,21 @@ const Order = require("../models/orders");
 
 exports.createOrder = async (req, res) => {
   try {
-    const { diaChi, tienHang, tenKhachHang, soLuong, tongTienHang, soDienThoai, phuongThucThanhToan, thoiGianDatHang, thoiGianNhanHang, thoiGianHuy, thoiGianDangGiao, trangThai } = req.body;
+    const { address, tienHang, nameUser, quantity, totalPrice, phone, paymentMethods, timeOrder, timeDelivery, timeCancel, thoiGianDangGiao, status } = req.body;
 
     const newOrder = new Order({
-      diaChi,
+      address,
       tienHang,
-      tenKhachHang,
-      soLuong,
-      tongTienHang,
-      soDienThoai,
-      phuongThucThanhToan,
-      thoiGianDatHang,
-      thoiGianNhanHang,
-      thoiGianHuy,
+      nameUser,
+      quantity,
+      totalPrice,
+      phone,
+      paymentMethods,
+      timeOrder,
+      timeDelivery,
+      timeCancel,
       thoiGianDangGiao,
-      trangThai,
+      status,
     });
 
     await newOrder.save();
