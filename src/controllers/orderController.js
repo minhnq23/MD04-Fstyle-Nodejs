@@ -3,20 +3,20 @@ const Order = require("../models/orders");
 
 exports.createOrder = async (req, res) => {
   try {
-    const { address, tienHang, nameUser, quantity, totalPrice, phone, paymentMethods, timeOrder, timeDelivery, timeCancel, thoiGianDangGiao, status } = req.body;
+    const { address, listProduct, idUser, phone, paymentMethods, status } = req.body;
+
+    let totalPrice = 0;
+    for (const product of listProduct) {
+      totalPrice += product.price * product.quantity;
+    }
 
     const newOrder = new Order({
       address,
-      tienHang,
-      nameUser,
-      quantity,
-      totalPrice,
+      listProduct,
+      idUser,
       phone,
       paymentMethods,
-      timeOrder,
-      timeDelivery,
-      timeCancel,
-      thoiGianDangGiao,
+      totalPrice, 
       status,
     });
 
@@ -65,10 +65,10 @@ exports.getOrderByOrderId = async (req, res) => {
   }
 };
 
-
-exports.deleteOrder = async (req, res) => {
+exports.updateOrderStatus = async (req, res) => {
   try {
     const orderId = req.params.id;
+    const { status } = req.body;
 
     const order = await Order.findById(orderId);
     if (!order) {
@@ -78,11 +78,12 @@ exports.deleteOrder = async (req, res) => {
       });
     }
 
-    await order.remove();
+    order.status = status;
+    await order.save();
 
     res.status(200).json({
       status: 200,
-      message: "Order deleted successfully",
+      message: "Order status updated successfully",
       order: order,
     });
   } catch (error) {

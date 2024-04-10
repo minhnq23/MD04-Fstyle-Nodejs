@@ -36,8 +36,8 @@ app.use("/",orderApi);
 
 const PORT = 3000;
 const uri =
-  // "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
-  "mongodb://localhost:27017/test";
+  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
+  // "mongodb://localhost:27017/test";
 //
 app.get("/", async (req, res) => {
   res.redirect("/signIn");
