@@ -5,13 +5,36 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tienHang: {
-    type: Number,
-    required: true,
-  },
-  nameUser: {
-    type: String,
-    required: true,
+  listProduct: [
+    {
+      idProduct: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+      name: {
+        type: String,
+        default: "Name Product",
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      price: {
+        type: Number,
+        default: 0.0,
+      },
+      size: {
+        type: String,
+      },
+      imageDefault:{
+        type: String,
+      }
+
+    },
+  ],
+  idUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true
   },
   quantity: {
     type: Number,
@@ -45,6 +68,8 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    enum: ["active", "deactive","pending","trading","delivered"],
+    default: "active",
     required: true,
   },
 });
