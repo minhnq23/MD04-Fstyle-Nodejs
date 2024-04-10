@@ -7,7 +7,8 @@ exports.imageUser = async (req, res) => {
   const base64data = user.avatar;
   console.log(base64data);
 
-  // Extract the data part of the base64 string
+
+  // Extract the data part of the base64 string h
   const data = base64data.replace(/^data:image\/\w+;base64,/, "");
 
   // Create a Buffer from the base64 data
@@ -19,3 +20,4 @@ exports.imageUser = async (req, res) => {
   // Send the buffer as the response
   res.end(buffer);
 };
+exports.imagesProduct = async (req, res) => {};

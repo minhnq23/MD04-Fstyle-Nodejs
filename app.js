@@ -36,31 +36,30 @@ app.use("/",orderApi);
 
 const PORT = 3000;
 const uri =
-  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
-  // "mongodb://localhost:27017/test";
-//
+  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority"
 app.get("/", async (req, res) => {
   res.redirect("/signIn");
 });
-const registrationToken = "your-device-registration-token"; // replace with the actual device token
+// const registrationToken =
+//   "eg9lMD6RTVC0DCFxXoRP7p:APA91bFHmDd-eYkvG0Ea1yR6rTLYba2FW8XqIKYEOX1PekB3r5nopDfJUMWdA-O8nD9rVPTnwoAEeLAf0UhD4DMVezcBLfNGqudsteLBSWaRNRA7jcqDTLC2xiOZMFC5dKHeLthJW2rn"; // replace with the actual device token
 
-const message = {
-  data: {
-    key1: "value1",
-    key2: "value2",
-  },
-  token: registrationToken,
-};
+// const message = {
+//   data: {
+//     key1: "hihi",
+//     key2: "haha",
+//   },
+//   token: registrationToken,
+// };
 
-admin
-  .messaging()
-  .send(message)
-  .then((response) => {
-    console.log("Successfully sent message:", response);
-  })
-  .catch((error) => {
-    console.error("Error sending message:", error);
-  });
+// admin
+//   .messaging()
+//   .send(message)
+//   .then((response) => {
+//     console.log("Successfully sent message:", response);
+//   })
+//   .catch((error) => {
+//     console.error("Error sending message:", error);
+//   });
 
 app.listen(PORT, async () => {
   console.log(`Server started on port ${PORT}`);

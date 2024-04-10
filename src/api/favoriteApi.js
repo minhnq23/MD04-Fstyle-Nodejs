@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const favoriteProductController = require("../controllers/favoriteController");
 
-// Định nghĩa các tuyến đường cho API của Favorite Product
 router.get(
   "/api/favorite/get/:userId",
   favoriteProductController.getFavoriteProducts
@@ -14,6 +13,10 @@ router.post(
 router.put(
   "/api/favorite/put/:userId/:productId",
   favoriteProductController.updateProductInFavorite
+);
+router.delete(
+  "/api/favorite/delete/:userId/:productId",
+  favoriteProductController.deleteProductFromFavorite
 );
 
 module.exports = router;

@@ -2,19 +2,18 @@ const mongoose = require("mongoose");
 const CartSchema = new mongoose.Schema({
   idUser: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     unique: true,
   },
   listProduct: [
     {
       idProduct: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
       },
       name: {
         type: String,
         default: "Name Product",
       },
-      quantity: {
+      soLuong: {
         type: Number,
         default: 1,
       },
@@ -22,12 +21,22 @@ const CartSchema = new mongoose.Schema({
         type: Number,
         default: 0.0,
       },
+      size: {
+        type: String,
+      },
+      imageDefault: {
+        type: String,
+      },
     },
   ],
+  totalProduct:{
+    type: Number,
+    default: 0,
+  },
   totalCart: {
     type: Number,
     default: 0,
   },
 });
-const CartModel = mongoose.model("Cart", CartSchema);
+const CartModel = mongoose.model("carts", CartSchema);
 module.exports = CartModel;

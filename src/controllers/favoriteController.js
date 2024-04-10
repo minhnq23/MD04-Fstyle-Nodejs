@@ -14,13 +14,31 @@ exports.getFavoriteProducts = async (req, res) => {
 
 exports.addProductToFavorite = async (req, res) => {
   const userId = req.params.userId;
-  const { idProduct, name, quantity, price, image64 } = req.body;
+  const product = req.body;
+  const { idProduct, name, quantity, price, defaultImage } = req.body;
 
   try {
     let favoriteProducts = await FavoriteProduct.findOne({ userId });
 
     if (!favoriteProducts) {
       favoriteProducts = new FavoriteProduct({ userId, listProduct: [] });
+    } else {
+
+      const existingProduct = favoriteProducts.listProduct.find(
+        (item) => String(item.idProduct) === String(product.idProduct)
+      );
+      if (existingProduct) {
+
+        return res
+          .status(400)
+          .json({ message: "Sản phẩm đã tồn tại trong danh sách yêu thích" });
+      }
+
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(idProduct)) {
+      return res.status(400).json({ message: "Id sản phẩm không hợp lệ" });
+
     }
 
     favoriteProducts.listProduct.push({
@@ -28,8 +46,9 @@ exports.addProductToFavorite = async (req, res) => {
       name,
       quantity,
       price,
-      image64,
+      defaultImage,
     });
+
     await favoriteProducts.save();
 
     res
@@ -64,10 +83,44 @@ exports.updateProductInFavorite = async (req, res) => {
         .json({ message: "Sản phẩm không tồn tại trong danh sách yêu thích" });
     }
 
+    const duplicateProductIndex = favoriteProducts.listProduct.findIndex(
+      (product, index) =>
+        index !== productIndex && product.idProduct.toString() === productId
+    );
+
+    if (duplicateProductIndex !== -1) {
+      return res
+        .status(400)
+        .json({ message: "Sản phẩm đã tồn tại trong danh sách yêu thích" });
+    }
+
     Object.assign(favoriteProducts.listProduct[productIndex], updates);
     await favoriteProducts.save();
 
     res.json(favoriteProducts);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.deleteProductFromFavorite = async (req, res) => {
+  const userId = req.params.userId;
+  const productId = req.params.productId;
+
+  try {
+    const favoriteProducts = await FavoriteProduct.findOneAndUpdate(
+      { userId },
+      { $pull: { listProduct: { idProduct: productId } } },
+      { new: true }
+    );
+
+    if (!favoriteProducts) {
+      return res
+        .status(404)
+        .json({ message: "Danh sách yêu thích không tồn tại" });
+    }
+
+    res.json({ message: "Sản phẩm đã được xóa khỏi danh sách yêu thích" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
