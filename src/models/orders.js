@@ -22,6 +22,13 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0.0,
       },
+      size: {
+        type: String,
+      },
+      imageDefault:{
+        type: String,
+      }
+
     },
   ],
   idUser: {
@@ -61,7 +68,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "deactive"],
+    enum: ["active", "deactive","pending","trading","delivered"],
     default: "active",
     required: true,
   },
