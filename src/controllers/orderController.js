@@ -4,12 +4,12 @@ const Order = require("../models/orders");
 exports.createOrder = async (req, res) => {
   try {
     const idUser = req.params.id;
-    const { address, listProduct, phone, paymentMethods, status } = req.body;
+    const { address, listProduct, phone, paymentMethods,shippingMethod, status,totalPrice } = req.body;
 
-    let totalPrice = 0;
-    for (const product of listProduct) {
-      totalPrice += product.price * product.quantity;
-    }
+    // let totalPrice = 0;
+    // for (const product of listProduct) {
+    //   totalPrice += product.price * product.quantity;
+    // }
 
     const newOrder = new Order({
       address,
@@ -17,6 +17,7 @@ exports.createOrder = async (req, res) => {
       idUser,
       phone,
       paymentMethods,
+      shippingMethod,
       totalPrice, 
       status,
     });
@@ -91,3 +92,17 @@ exports.updateOrderStatus = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+exports.getOrdersByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const orders = await Order.find({ idUser: userId });
+    res.status(200).json({
+      status: 200,
+      message: "Orders retrieved successfully for user",
+      orders: orders,
+    });
+  } catch (error) {
+    res.status(500).json({ status: 500, message: error.message });
+  }
+};
+

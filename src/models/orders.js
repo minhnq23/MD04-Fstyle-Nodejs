@@ -41,7 +41,7 @@ const orderSchema = new mongoose.Schema({
     default: 1,
   },
   totalPrice: {
-    type: Number,
+    type: String,
     required: true,
   },
   phone: {
@@ -52,6 +52,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ["COD", "Sandbox"],
     default: "COD",
+  },
+  shippingMethod: { 
+    type: String,
+    enum: ["standard", "express"],
+    default: "standard",
   },
   timeOrder: {
     type: Date,
