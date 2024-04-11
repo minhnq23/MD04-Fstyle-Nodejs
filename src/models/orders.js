@@ -1,50 +1,80 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  diaChi: {
+  address: {
     type: String,
     required: true,
   },
-  tienHang: {
-    type: Number,
-    required: true,
+  listProduct: [
+    {
+      idProduct: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+      name: {
+        type: String,
+        default: "Name Product",
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      price: {
+        type: Number,
+        default: 0.0,
+      },
+      size: {
+        type: String,
+      },
+      imageDefault:{
+        type: String,
+      }
+
+    },
+  ],
+  idUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true
   },
-  tenKhachHang: {
-    type: String,
-    required: true,
-  },
-  soLuong: {
+  quantity: {
     type: Number,
     default: 1,
   },
-  tongTienHang: {
-    type: Number,
-    required: true,
-  },
-  soDienThoai: {
+  totalPrice: {
     type: String,
     required: true,
   },
-  phuongThucThanhToan: {
+  phone: {
+    type: String,
+    required: true,
+  },
+  paymentMethods: {
     type: String,
     enum: ["COD", "Sandbox"],
     default: "COD",
   },
-  thoiGianDatHang: {
+  shippingMethod: { 
+    type: String,
+    enum: ["standard", "express"],
+    default: "standard",
+  },
+  timeOrder: {
     type: Date,
     default: Date.now,
   },
-  thoiGianNhanHang: {
+  timeDelivery: {
     type: Date,
   },
-  thoiGianHuy: {
+  timeCancel: {
     type: Date,
   },
   thoiGianDangGiao: {
     type: Date,
   },
-  trangThai: {
+  status: {
     type: String,
+    enum: ["active", "deactive","pending","trading","delivered"],
+    default: "active",
     required: true,
   },
 });

@@ -3,21 +3,23 @@ const Order = require("../models/orders");
 
 exports.createOrder = async (req, res) => {
   try {
-    const { diaChi, tienHang, tenKhachHang, soLuong, tongTienHang, soDienThoai, phuongThucThanhToan, thoiGianDatHang, thoiGianNhanHang, thoiGianHuy, thoiGianDangGiao, trangThai } = req.body;
+    const idUser = req.params.id;
+    const { address, listProduct, phone, paymentMethods,shippingMethod, status,totalPrice } = req.body;
+
+    // let totalPrice = 0;
+    // for (const product of listProduct) {
+    //   totalPrice += product.price * product.quantity;
+    // }
 
     const newOrder = new Order({
-      diaChi,
-      tienHang,
-      tenKhachHang,
-      soLuong,
-      tongTienHang,
-      soDienThoai,
-      phuongThucThanhToan,
-      thoiGianDatHang,
-      thoiGianNhanHang,
-      thoiGianHuy,
-      thoiGianDangGiao,
-      trangThai,
+      address,
+      listProduct,
+      idUser,
+      phone,
+      paymentMethods,
+      shippingMethod,
+      totalPrice, 
+      status,
     });
 
     await newOrder.save();
@@ -65,10 +67,10 @@ exports.getOrderByOrderId = async (req, res) => {
   }
 };
 
-
-exports.deleteOrder = async (req, res) => {
+exports.updateOrderStatus = async (req, res) => {
   try {
     const orderId = req.params.id;
+    const { status } = req.body;
 
     const order = await Order.findById(orderId);
     if (!order) {
@@ -78,14 +80,29 @@ exports.deleteOrder = async (req, res) => {
       });
     }
 
-    await order.remove();
+    order.status = status;
+    await order.save();
 
     res.status(200).json({
       status: 200,
-      message: "Order deleted successfully",
+      message: "Order status updated successfully",
       order: order,
     });
   } catch (error) {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+exports.getOrdersByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const orders = await Order.find({ idUser: userId });
+    res.status(200).json({
+      status: 200,
+      message: "Orders retrieved successfully for user",
+      orders: orders,
+    });
+  } catch (error) {
+    res.status(500).json({ status: 500, message: error.message });
+  }
+};
+
