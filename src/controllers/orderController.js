@@ -4,7 +4,7 @@ const Order = require("../models/orders");
 exports.createOrder = async (req, res) => {
   try {
     const idUser = req.params.id;
-    const { address, listProduct, phone, paymentMethods,shippingMethod, status,totalPrice } = req.body;
+    const { address, listProduct, phone, paymentMethods,shippingMethod, status,totalPrice,userName } = req.body;
 
     // let totalPrice = 0;
     // for (const product of listProduct) {
@@ -20,6 +20,7 @@ exports.createOrder = async (req, res) => {
       shippingMethod,
       totalPrice, 
       status,
+      userName,
     });
 
     await newOrder.save();

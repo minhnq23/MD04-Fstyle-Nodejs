@@ -36,6 +36,10 @@ const orderSchema = new mongoose.Schema({
     ref: 'user',
     required: true
   },
+  userName:{
+    type: String,
+    required: true
+  },
   quantity: {
     type: Number,
     default: 1,
