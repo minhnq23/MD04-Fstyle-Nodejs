@@ -1,6 +1,7 @@
 const express = require("express");
 const Product = require("../models/product");
 const UserModel = require("../models/user");
+const mongoose = require("mongoose");
 const Category = require("../models/category");
 
 exports.createProduct = async (req, res) => {
@@ -56,22 +57,15 @@ exports.updateProduct = async (req, res) => {
     const productId = req.params.id;
     const updates = req.body;
 
-    const updatedProduct = await Product.findByIdAndUpdate(
-      { _id: productId },
-      updates,
-      {
-        new: true,
-      }
-    );
-
-    await updatedProduct.save();
-
-    if (!updatedProduct) {
+    const existingProduct = await Product.findById(productId);
+    if (!existingProduct) {
       return res
         .status(404)
         .json({ status: 404, message: "Không tìm thấy sản phẩm" });
     }
-
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
+      new: true,
+    });
     res.status(200).json({
       status: 200,
       message: "Sản phẩm đã được cập nhật thành công",
@@ -81,7 +75,6 @@ exports.updateProduct = async (req, res) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
-
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().lean();
