@@ -32,7 +32,7 @@ exports.addCart = async (req, res) => {
     });
   }
 
-  result.totalCart += product.soLuong * product.price;
+  result.totalCart += parseFloat(product.price) * parseFloat(product.soLuong);
 
   await result.save();
   res.status(201).json({
@@ -54,7 +54,7 @@ exports.removeProduct = async (req, res) => {
   let total = 0;
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
-    total += product.price * product.soLuong;
+    total += parseFloat(product.price) * parseFloat(product.soLuong);
     console.log(product);
   }
 
@@ -118,7 +118,7 @@ exports.reduce = async (req, res) => {
 
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
-    total += product.price * product.soLuong;
+    total += parseFloat(product.price) * parseFloat(product.soLuong);
     console.log(product);
   }
 
@@ -153,7 +153,7 @@ exports.increase = async (req, res) => {
 
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
-    total += product.price * product.soLuong;
+    total += parseFloat(product.price) * parseFloat(product.soLuong);
     console.log(product);
   }
 
