@@ -1,28 +1,61 @@
 const express = require("express");
 const Order = require("../models/orders");
+const UserModel = require("../models/user");
 
 exports.createOrder = async (req, res) => {
+  const idUser = req.params.id;
+  const {
+    address,
+    listProduct,
+    phone,
+    paymentMethods,
+    shippingMethod,
+    status,
+    totalPrice,
+  } = req.body;
+
+  // let totalPrice = 0;
+  // for (const product of listProduct) {
+  //   totalPrice += product.price * product.quantity;
+  // }
+
+  const newOrder = new Order({
+    address,
+    listProduct,
+    idUser,
+    phone,
+    paymentMethods,
+    shippingMethod,
+    totalPrice,
+    status,
+  });
+  let user = await UserModel.findById(idUser).lean();
+  console.log("====================================");
+  console.log("User: ", user);
+  console.log("====================================");
+
+  const registrationToken = user.tokenDevice + "";
+
   try {
-    const idUser = req.params.id;
-    const { address, listProduct, phone, paymentMethods,shippingMethod, status,totalPrice } = req.body;
-
-    // let totalPrice = 0;
-    // for (const product of listProduct) {
-    //   totalPrice += product.price * product.quantity;
-    // }
-
-    const newOrder = new Order({
-      address,
-      listProduct,
-      idUser,
-      phone,
-      paymentMethods,
-      shippingMethod,
-      totalPrice, 
-      status,
-    });
-
     await newOrder.save();
+
+    const message = {
+      data: {
+        key1: "Mã đơn hàng: " + newOrder._id,
+        key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
+      },
+      token: registrationToken,
+    };
+
+    admin
+      .messaging()
+      .send(message)
+      .then((response) => {
+        console.log("Successfully sent message:", response);
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
 
     res.status(201).json({
       status: 201,
@@ -106,3 +139,22 @@ exports.getOrdersByUserId = async (req, res) => {
   }
 };
 
+const sendNotifications = (req, res) => {
+  const message = {
+    data: {
+      key1: "hihi",
+      key2: "haha",
+    },
+    token: registrationToken,
+  };
+
+  admin
+    .messaging()
+    .send(message)
+    .then((response) => {
+      console.log("Successfully sent message:", response);
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+    });
+};
