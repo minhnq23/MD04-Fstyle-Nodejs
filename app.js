@@ -12,7 +12,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
-const loginRouter = require("./src/routers/login")
+const loginRouter = require("./src/routers/login");
+const homeRouter =require("./src/routers/home");
+const categoriesRouter =require("./src/routers/categories");
+const productsRouter =require("./src/routers/products");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const categoryApi = require("./src/api/categoryApi");
@@ -32,6 +35,9 @@ app.use(bodyParser.json());
 
 app.use("/", signInRouter);
 app.use("/", loginRouter);
+app.use("/", homeRouter);
+app.use("/", categoriesRouter);
+app.use("/", productsRouter);
 app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", categoryApi);

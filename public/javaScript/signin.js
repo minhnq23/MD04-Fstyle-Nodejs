@@ -306,7 +306,7 @@ lgForm.addEventListener('submit', function (e){
         } else if (data.message === "sai mật khẩu") {
             alert("Mật khẩu không đúng.");
         } else {
-            alert("Thông tin người dùng:"+ data);
+            window.location.href = "/home";
         }
     })
     .catch(error => {
