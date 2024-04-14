@@ -20,9 +20,15 @@ const username = document.getElementById('username')
 const usernameError = document.querySelector("#username-error")
 const email = document.getElementById('email')
 const emailError = document.querySelector("#email-error")
+const phone = document.getElementById('phone')
+const phoneError = document.querySelector("#phone-error")
 const password = document.getElementById('password')
 const passwordError = document.querySelector("#password-error")
+const repassword = document.getElementById('repassword')
+const repasswordError = document.querySelector("#repassword-error")
 
+   
+     
 // Show input error message
 function showError(input, message) {
     const formControl = input.parentElement
@@ -55,27 +61,67 @@ email.addEventListener("input", function(){
 
 // Check length input user name
 username.addEventListener("input", function(){
-    if (username.value.length < 4) {
-        usernameError.textContent = "*Username must be at least 8 characters."
+    if (username.value.length < 8) {
+        usernameError.textContent = "*Username phải lớn hơn 8  kí tự"
     }else if(username.value.length > 20){
-        usernameError.textContent = "*Username must be less than 20 characters.";
+        usernameError.textContent = "*Username phải nhỏ hơn 20 kí tự";
     }else {
         usernameError.textContent = "";
     }
 })
+// check username
+function checkUsername(username){
+    return username.value.length >=8 && username.value.length <=20;
+}
 
+//check phone
+phone.addEventListener("input", function(){
+    const phoneRegex = /^0\d{9}$/;
+    if(!phoneRegex.test(phone.value)){
+      phoneError.textContent="Số điện thoại không hợp lệ";
+    }else{
+        phoneError.textContent = "";
+    }
+})
+function checkPhoneNumber(phone) {
+    const phoneRegex = /^0\d{9}$/;
+    return phoneRegex.test(phone.value);
+}
 // Check length input password
 password.addEventListener("input", function(){
+    const uppercaseRegex = /[A-Z]/;
+    const specialCharRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
     if (password.value.length < 8) {
-        passwordError.textContent = "*Password must be at least 8 characters."
+        passwordError.textContent = "*Mật khẩu phải lớn hơn 8 kí tự"
     }else if(password.value.length > 20){
-        passwordError.textContent = "*Password must be less than 20 characters."
-    }else {
+        passwordError.textContent = "*Mật khẩu phải nhỏ hơn 20 kí tự."
+    }else if (!uppercaseRegex.test(password.value)) {
+        passwordError.textContent = "*Mật khẩu phải chứa ít nhất 1 chữ in hoa."
+    } else if (!specialCharRegex.test(password.value)) {
+        passwordError.textContent = "*Mật khẩu phải chứa kí tự đặc biệt."
+    } else {
         passwordError.textContent = "";
     }
 })
-
-
+function checkPassword(password){
+    const uppercaseRegex = /[A-Z]/;
+    const specialCharRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    return password.value.length >=8 && password.value.length <=20 && uppercaseRegex.test(password.value) && specialCharRegex.test(password.value);
+}
+repassword.addEventListener("input", function(){
+    if(repassword.value.length<8){
+        repasswordError.textContent = "*Xác nhận mật khẩu phải lớn hơn 8 kí tự."
+    }else if(repassword.value.length > 20){
+        repasswordError.textContent = "Xác nhận mật khẩu* phải nhỏ hơn 20 kí tự."
+    }else if (repassword.value !== password.value) {
+        repasswordError.textContent = "*Xác nhận mật khẩu không trùng khớp.";
+    } else {
+        repasswordError.textContent = "";
+    }
+})
+function checkRePassword(repassword){
+    return repassword.value.length >=8 && repassword.value.length <=20 && repassword.value ==password.value;
+}
 // Check required fields
 function checkRequired(inputArr) {
     let isRequired = false
@@ -97,15 +143,69 @@ function getFieldName(input) {
 }
 
 // Event listeners
-form.addEventListener('submit', function (e) {
-    e.preventDefault()
 
-    if (!checkRequired([username, email, password])) {
-        // checkLength(username, 3, 15)
-        // checkLength(password, 6, 25)
-        // checkEmail(email)
+document.getElementById('registrationForm').addEventListener('submit',function(event){
+event.preventDefault();
+    if (checkRequired([username, email,phone, password,repassword])) {
+         return;
     } 
-})
+    if(!checkEmail(email.value)){
+        showError(email, "Email không hợp lệ!")
+        return;
+    }
+    if(!checkPhoneNumber(phone)){
+        showError(phone, "Số điện thoại không hợp lệ!")
+        return;
+    }
+    if(!checkPassword(password)){
+        showError(password, "Mật khẩu phải từ 8 đến 20 kí tự chứa chữ in hoa và kí tự đặc biệt!");
+        return;
+    }
+    if(!checkRePassword(repassword)){
+        showError(repassword, "Xác nhận mật khẩu không khớp!")
+        return;
+    }
+  
+
+    if(!checkUsername(username)){
+        showError(username, "Username phải từ 8 đến 20 kí tự")
+    }
+    fetch("/api/user/post", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ 
+            name: username.value,
+            email: email.value,
+            phone: phone.value,
+            password: password.value,
+        
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message==="Email đã tồn tại") {
+           alert("Email đã tồn tại");
+           return;
+        } else if(data.message==="Đã tạo mới người dùng thành công.") {
+            alert("Đã tạo mới người dùng thành công.");
+            container.classList.remove("right-panel-active");
+            titleElement.textContent = 'Login';
+             username.value = '';
+            email.value = '';
+            phone.value = '';
+            password.value = '';
+            repassword.value = '';
+        }else{
+            alert("Tạo tài khoản thất bại");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Vui lòng thử lại sau");
+    });
+});
 
 // Check Login Error
 
@@ -134,10 +234,12 @@ function checkEmail2(lgEmail) {
     const emailRegex2 = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex2.test(lgEmail);
 }
-
+function checkPassword(lgPassword){
+    return lgPassword.value.length>=8 && lgPassword.value.length <=20;
+}
 lgEmail.addEventListener("input", function(){
     if (!checkEmail2(lgEmail.value)) {
-        lgEmailError.textContent = "*Email is not valid"
+        lgEmailError.textContent = "*Email không hợp lệ"
     }else {
         lgEmailError.textContent = "";
     }
@@ -146,9 +248,9 @@ lgEmail.addEventListener("input", function(){
 // Check length input passwrod
 lgPassword.addEventListener("input", function(){
     if (lgPassword.value.length < 8) {
-        lgPasswordError.textContent = "*Password must be at least 8 characters."
+        lgPasswordError.textContent = "*Mật khẩu phải lớn hơn 8 kí tự."
     }else if (lgPassword.value.length > 20){
-        lgPasswordError.textContent = "*Password must be less than 20 characters."
+        lgPasswordError.textContent = "*Mật khẩu phải nhỏ hơn 20 kí tự."
     }else {
         lgPasswordError.textContent = "";
     }
@@ -158,7 +260,7 @@ function checkRequiredLg(inputArr2) {
     let isRequiredLg = false
     inputArr2.forEach(function(input){
         if (input.value.trim() === '') {
-            showError2(input, `*${getFieldNameLg(input)} Please enter your information in this field`)
+            showError2(input, `*${getFieldNameLg(input)} Vui lòng nhập thông tin của bạn vào trường này`)
             isRequiredLg = true
         }else {
             showSuccess2(input)
@@ -173,9 +275,42 @@ function getFieldNameLg(input) {
 }
 
 lgForm.addEventListener('submit', function (e){
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!checkRequiredLg([lgEmail, lgPassword])) {
-        checkEmail2(lgEmail)
+    if (checkRequiredLg([lgEmail, lgPassword])) {
+        return;
     }
-})
+    if (!checkEmail2(lgEmail.value)) {
+        showError2(lgEmail, "*Email không hợp lệ");
+        return;
+    }
+    if (!checkPassword(lgPassword)) {
+        showError2(lgPassword, "*Mật khẩu phải từ 8 đến 20 kí tự");
+        return; 
+    }
+    fetch("/api/user/signin", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ 
+            email: lgEmail.value,
+            password: lgPassword.value,
+            tokenDevice: ""
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === "User not found") {
+            alert("Email không tồn tại.");
+        } else if (data.message === "sai mật khẩu") {
+            alert("Mật khẩu không đúng.");
+        } else {
+            alert("Thông tin người dùng:"+ data);
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+    });
+});
