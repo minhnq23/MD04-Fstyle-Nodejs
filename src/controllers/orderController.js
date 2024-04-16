@@ -1,6 +1,7 @@
 const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
+var admin = require("firebase-admin");
 
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
@@ -35,13 +36,14 @@ exports.createOrder = async (req, res) => {
   console.log("====================================");
 
   const registrationToken = user.tokenDevice + "";
+  console.log("token: ",  user.tokenDevice);
 
   try {
-    await newOrder.save();
-
+    const oder = await newOrder.save();
+      console.log("oder _id: ", oder_id);
     const message = {
       data: {
-        key1: "Mã đơn hàng: " + newOrder._id,
+        key1: "Mã đơn hàng: " + oder._id,
         key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
       },
       token: registrationToken,
