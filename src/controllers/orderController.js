@@ -39,24 +39,17 @@ exports.createOrder = async (req, res) => {
   console.log("token: ",  user.tokenDevice);
 
   try {
-  let id = "";
-    newOrder.save().then(obj => {
-        console.log('Đối tượng đã được lưu vào cơ sở dữ liệu:');
-        console.log(obj);
-        console.log('ID của đối tượng đã được lưu:', obj._id);
-      id =  obj._id;
-    }).catch(err => {
-        console.error(err);
-    });
-     // console.log("oder _id: ", oder_id);
+    const order = await newOrder.save();
+    const orderId = order._id;
+    let user = await UserModel.findById(idUser).lean();
+    const registrationToken = user.tokenDevice;
     const message = {
       data: {
-        key1: "Mã đơn hàng: " + id,
-        key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
+        key1: "Mã đơn hàng: " + orderId, 
+        key2: "Đơn hàng của quý khách đang chờ xác nhận, vui lòng kiểm tra lại trong danh sách đơn hàng",
       },
       token: registrationToken,
     };
-
     admin
       .messaging()
       .send(message)
@@ -114,8 +107,8 @@ exports.updateOrderStatus = async (req, res) => {
   try {
     const orderId = req.params.id;
     const { status } = req.body;
-
     const order = await Order.findById(orderId);
+    
     if (!order) {
       return res.status(404).json({
         status: 404,
@@ -123,8 +116,51 @@ exports.updateOrderStatus = async (req, res) => {
       });
     }
 
+    const oldStatus = order.status;
     order.status = status;
     await order.save();
+
+    if (oldStatus !== status) {
+      const user = await UserModel.findById(order.idUser).lean();
+      const registrationToken = user.tokenDevice;
+
+      let notificationMessage = "";
+      switch (status) {
+        case "pending":
+          notificationMessage = "Đơn hàng của bạn đang chờ xác nhận.";
+          break;
+        case "active":
+          notificationMessage = "Đơn hàng của bạn đã được xác nhận.";
+          break;
+        case "deactive":
+          notificationMessage = "Đơn hàng của bạn đã bị hủy.";
+          break;
+        case "trading":
+          notificationMessage = "Đơn hàng của bạn đang được giao";
+          break;
+        case "delivered":
+          notificationMessage = "Đơn hàng của bạn đã được giao thành công.";
+          break;
+        default:
+          notificationMessage = "Trạng thái đơn hàng đã được cập nhật.";
+      }
+
+      const message = {
+        data: {
+          key1: "Cập nhật đơn hàng",
+          key2: notificationMessage,
+        },
+        token: registrationToken, 
+      };
+
+      admin.messaging().send(message)
+        .then((response) => {
+          console.log("Successfully sent message:", response);
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
+    }
 
     res.status(200).json({
       status: 200,
@@ -135,6 +171,7 @@ exports.updateOrderStatus = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+
 exports.getOrdersByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;
