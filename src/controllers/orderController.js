@@ -39,11 +39,19 @@ exports.createOrder = async (req, res) => {
   console.log("token: ",  user.tokenDevice);
 
   try {
-    const oder = await newOrder.save();
-      console.log("oder _id: ", oder_id);
+  let id = "";
+    newOrder.save().then(obj => {
+        console.log('Đối tượng đã được lưu vào cơ sở dữ liệu:');
+        console.log(obj);
+        console.log('ID của đối tượng đã được lưu:', obj._id);
+      id =  obj._id;
+    }).catch(err => {
+        console.error(err);
+    });
+     // console.log("oder _id: ", oder_id);
     const message = {
       data: {
-        key1: "Mã đơn hàng: " + oder._id,
+        key1: "Mã đơn hàng: " + id,
         key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
       },
       token: registrationToken,
