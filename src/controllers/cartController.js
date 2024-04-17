@@ -33,7 +33,9 @@ exports.addCart = async (req, res) => {
     });
   }
 
+
   result.totalCart += parseFloat(product.price) * parseFloat(product.soLuong);
+  result.totalProduct += product.soLuong;
 
   await result.save();
   res.status(201).json({
@@ -53,14 +55,20 @@ exports.removeProduct = async (req, res) => {
   );
 
   let total = 0;
+  let sum = 0;
+
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
+
     total += parseFloat(product.price) * parseFloat(product.soLuong);
+    sum += product.soLuong;
+
     console.log(product);
   }
 
   console.log(result.listProduct);
   result.totalCart = total;
+  result.totalProduct = sum;
 
   await result.save();
   res.status(201).json({
@@ -116,16 +124,20 @@ exports.reduce = async (req, res) => {
   console.log(result);
   console.log("====================================");
   let total = 0;
-
+  let sum = 0;
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
+
     total += parseFloat(product.price) * parseFloat(product.soLuong);
+
+    sum += product.soLuong;
+
     console.log(product);
   }
 
   console.log(result.listProduct);
   result.totalCart = total;
-
+  result.totalProduct = sum;
   await result.save();
   res.status(201).json({
     cart: result,
@@ -151,15 +163,21 @@ exports.increase = async (req, res) => {
   console.log(result);
   console.log("====================================");
   let total = 0;
-
+  let sum = 0;
   for (let i = 0; i < result.listProduct.length; i++) {
     const product = result.listProduct[i];
+
     total += parseFloat(product.price) * parseFloat(product.soLuong);
+
+    
+    sum += product.soLuong;
+
     console.log(product);
   }
 
   console.log(result.listProduct);
   result.totalCart = total;
+  result.totalProduct = sum;
 
   await result.save();
   res.status(201).json({
