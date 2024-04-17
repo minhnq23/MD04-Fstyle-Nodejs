@@ -5,6 +5,7 @@ const UserModel = require("../models/user");
 
 exports.signIn = async (req, res) => {
   const { email, password, tokenDevice } = req.body;
+  console.log(email, password, tokenDevice);
   const authUser = await UserModel.findOne({ email: email });
   if (!authUser) {
     // Handle case where user with the provided email is not found
