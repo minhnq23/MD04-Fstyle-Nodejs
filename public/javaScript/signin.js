@@ -186,10 +186,10 @@ event.preventDefault();
     .then(response => response.json())
     .then(data => {
         if (data.message==="Email đã tồn tại") {
-           alert("Email đã tồn tại");
+            showAlert("Email đã tồn tại");
            return;
         } else if(data.message==="Đã tạo mới người dùng thành công.") {
-            alert("Đã tạo mới người dùng thành công.");
+            showAlert("Đã tạo mới người dùng thành công.");
             container.classList.remove("right-panel-active");
             titleElement.textContent = 'Login';
              username.value = '';
@@ -198,12 +198,12 @@ event.preventDefault();
             password.value = '';
             repassword.value = '';
         }else{
-            alert("Tạo tài khoản thất bại");
+            showAlert("Tạo tài khoản thất bại");
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert("Vui lòng thử lại sau");
+        showAlert("Vui lòng thử lại sau");
     });
 });
 
@@ -306,7 +306,11 @@ lgForm.addEventListener('submit', function (e){
         } else if (data.message === "sai mật khẩu") {
             alert("Mật khẩu không đúng.");
         } else {
-            window.location.href = "/home";
+            if(data.isAdmin){
+                window.location.href = "/home";
+            }else {
+                alert('Bạn không có quyền truy cập vào trang này.');
+            }
         }
     })
     .catch(error => {

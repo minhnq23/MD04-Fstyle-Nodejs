@@ -6,7 +6,7 @@ const imageError = document.querySelector("#categoryimage-error");
 //check name
 function checkName(nameInput){
     if(nameInput.value.length === 0){
-      nameError.textContent = "Vui lòng nhập tên thể loại";
+      nameError.textContent = "*Vui lòng nhập tên thể loại";
       return false;
     }
     return true;
@@ -14,7 +14,7 @@ function checkName(nameInput){
 
 function checkImageSelected(imageInput) {
     if (imageInput.value.length === 0) {
-        alert("Vui lòng nhập link ảnh");
+        imageError.textContent ="*Vui lòng nhập link ảnh";
         return false;
     }
     return true;
@@ -47,8 +47,4 @@ addButton.addEventListener('click',  function(e) {
         .catch(err=>{
             alert("Error: ",err)
         })
-
-
-       
-
 });
