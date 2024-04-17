@@ -127,19 +127,19 @@ exports.updateOrderStatus = async (req, res) => {
       let notificationMessage = "";
       switch (status) {
         case "pending":
-          notificationMessage = "Đơn hàng của bạn đang chờ xác nhận.";
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đang chờ xác nhận. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
           break;
         case "active":
-          notificationMessage = "Đơn hàng của bạn đã được xác nhận.";
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã được xác nhận. Cửa hàng sẽ xử lý và sớm giao tới địa chỉ bạn cung cấp. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
           break;
         case "deactive":
-          notificationMessage = "Đơn hàng của bạn đã bị hủy.";
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã xác nhận hủy thành công. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
           break;
-        case "trading":
-          notificationMessage = "Đơn hàng của bạn đang được giao";
+        case "trading": 
+        notificationMessage =  "Quý khách vui lòng chú ý điện thoại, đơn hàng " + orderId + " đang được giao đến. Hãy kiểm tra trạng thái của đơn hàng trong trang cá nhân của mình.";
           break;
         case "delivered":
-          notificationMessage = "Đơn hàng của bạn đã được giao thành công.";
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã được giao thành công. Nếu có vấn đề gì xảy ra hãy liên hệ với của hàng qua hotline: 0123456789";
           break;
         default:
           notificationMessage = "Trạng thái đơn hàng đã được cập nhật.";
