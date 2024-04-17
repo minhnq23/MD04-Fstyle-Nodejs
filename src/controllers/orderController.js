@@ -1,6 +1,7 @@
 const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
+var admin = require("firebase-admin");
 
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
@@ -35,18 +36,20 @@ exports.createOrder = async (req, res) => {
   console.log("====================================");
 
   const registrationToken = user.tokenDevice + "";
+  console.log("token: ",  user.tokenDevice);
 
   try {
-    await newOrder.save();
-
+    const order = await newOrder.save();
+    const orderId = order._id;
+    let user = await UserModel.findById(idUser).lean();
+    const registrationToken = user.tokenDevice;
     const message = {
       data: {
-        key1: "Mã đơn hàng: " + newOrder._id,
-        key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
+        key1: "Mã đơn hàng: " + orderId, 
+        key2: "Đơn hàng của quý khách đang chờ xác nhận, vui lòng kiểm tra lại trong danh sách đơn hàng",
       },
       token: registrationToken,
     };
-
     admin
       .messaging()
       .send(message)
@@ -104,8 +107,8 @@ exports.updateOrderStatus = async (req, res) => {
   try {
     const orderId = req.params.id;
     const { status } = req.body;
-
     const order = await Order.findById(orderId);
+    
     if (!order) {
       return res.status(404).json({
         status: 404,
@@ -113,8 +116,51 @@ exports.updateOrderStatus = async (req, res) => {
       });
     }
 
+    const oldStatus = order.status;
     order.status = status;
     await order.save();
+
+    if (oldStatus !== status) {
+      const user = await UserModel.findById(order.idUser).lean();
+      const registrationToken = user.tokenDevice;
+
+      let notificationMessage = "";
+      switch (status) {
+        case "pending":
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đang chờ xác nhận. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
+          break;
+        case "active":
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã được xác nhận. Cửa hàng sẽ xử lý và sớm giao tới địa chỉ bạn cung cấp. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
+          break;
+        case "deactive":
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã xác nhận hủy thành công. Vui lòng kiểm tra trạng thái đơn hàng trong trang cá nhân!";
+          break;
+        case "trading": 
+        notificationMessage =  "Quý khách vui lòng chú ý điện thoại, đơn hàng " + orderId + " đang được giao đến. Hãy kiểm tra trạng thái của đơn hàng trong trang cá nhân của mình.";
+          break;
+        case "delivered":
+          notificationMessage = "Đơn hàng " + orderId + " của bạn đã được giao thành công. Nếu có vấn đề gì xảy ra hãy liên hệ với của hàng qua hotline: 0123456789";
+          break;
+        default:
+          notificationMessage = "Trạng thái đơn hàng đã được cập nhật.";
+      }
+
+      const message = {
+        data: {
+          key1: "Cập nhật đơn hàng",
+          key2: notificationMessage,
+        },
+        token: registrationToken, 
+      };
+
+      admin.messaging().send(message)
+        .then((response) => {
+          console.log("Successfully sent message:", response);
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
+    }
 
     res.status(200).json({
       status: 200,
@@ -125,6 +171,7 @@ exports.updateOrderStatus = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
+
 exports.getOrdersByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;

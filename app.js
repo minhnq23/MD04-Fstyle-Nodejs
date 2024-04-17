@@ -11,11 +11,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const user = require("./src/models/user");
-const signInRouter = require("./src/routers/signIn");
+
 const loginRouter = require("./src/routers/login");
-const homeRouter =require("./src/routers/home");
-const categoriesRouter =require("./src/routers/categories");
-const productsRouter =require("./src/routers/products");
+
+const signInRouter = require("./src/routers/signIn");
+const homeRouter = require("./src/routers/home");
+const categoriesRouter = require("./src/routers/categories");
+
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const categoryApi = require("./src/api/categoryApi");
@@ -29,15 +31,16 @@ const path = require("path");
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({extended:false}));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/", loginRouter);
 app.use("/", signInRouter);
 app.use("/", loginRouter);
 app.use("/", homeRouter);
 app.use("/", categoriesRouter);
-app.use("/", productsRouter);
+
 app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", categoryApi);
@@ -45,11 +48,12 @@ app.use("/", productsApi);
 app.use("/", imageApi);
 app.use("/", favoritesApi);
 app.use("/", cartApi);
-app.use("/",orderApi);
+app.use("/", orderApi);
 
 const PORT = 3000;
 const uri =
   "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
+
 // const registrationToken =
 //   "eg9lMD6RTVC0DCFxXoRP7p:APA91bFHmDd-eYkvG0Ea1yR6rTLYba2FW8XqIKYEOX1PekB3r5nopDfJUMWdA-O8nD9rVPTnwoAEeLAf0UhD4DMVezcBLfNGqudsteLBSWaRNRA7jcqDTLC2xiOZMFC5dKHeLthJW2rn"; // replace with the actual device token
 
