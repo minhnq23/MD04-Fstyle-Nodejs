@@ -12,6 +12,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const user = require("./src/models/user");
 const signInRouter = require("./src/routers/signIn");
+const loginRouter = require("./src/routers/login");
+const homeRouter =require("./src/routers/home");
+const categoriesRouter =require("./src/routers/categories");
+const productsRouter =require("./src/routers/products");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const categoryApi = require("./src/api/categoryApi");
@@ -20,11 +24,20 @@ const AddressApi = require("./src/api/addressApi");
 const imageApi = require("./src/api/imageApi");
 const cartApi = require("./src/api/cartApi");
 const orderApi = require("./src/api/orderApi");
+const path = require("path");
+
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
 app.use("/", signInRouter);
+app.use("/", loginRouter);
+app.use("/", homeRouter);
+app.use("/", categoriesRouter);
+app.use("/", productsRouter);
 app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", categoryApi);
@@ -36,10 +49,7 @@ app.use("/",orderApi);
 
 const PORT = 3000;
 const uri =
-  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority"
-app.get("/", async (req, res) => {
-  res.redirect("/signIn");
-});
+  "mongodb+srv://minhnq23:minh31223@cluster.u3ap31e.mongodb.net/?retryWrites=true&w=majority";
 // const registrationToken =
 //   "eg9lMD6RTVC0DCFxXoRP7p:APA91bFHmDd-eYkvG0Ea1yR6rTLYba2FW8XqIKYEOX1PekB3r5nopDfJUMWdA-O8nD9rVPTnwoAEeLAf0UhD4DMVezcBLfNGqudsteLBSWaRNRA7jcqDTLC2xiOZMFC5dKHeLthJW2rn"; // replace with the actual device token
 
