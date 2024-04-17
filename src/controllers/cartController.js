@@ -33,7 +33,6 @@ exports.addCart = async (req, res) => {
     });
   }
 
-
   result.totalCart += parseFloat(product.price) * parseFloat(product.soLuong);
   result.totalProduct += product.soLuong;
 
@@ -169,7 +168,6 @@ exports.increase = async (req, res) => {
 
     total += parseFloat(product.price) * parseFloat(product.soLuong);
 
-    
     sum += product.soLuong;
 
     console.log(product);
@@ -187,11 +185,8 @@ exports.increase = async (req, res) => {
 exports.placeOrder = async (req, res) => {
   try {
     const userId = req.params.id_user;
-
     const order = await Order.create(req.body);
-
     await Cart.findOneAndDelete({ idUser: userId });
-
     res.status(201).json({ order });
   } catch (error) {
     console.error("Error placing order:", error);
