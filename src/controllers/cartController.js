@@ -1,5 +1,6 @@
 const express = require("express");
 const Cart = require("../models/cart");
+const Order = require("../models/orders");
 const UserModel = require("../models/user");
 const mongoose = require("mongoose");
 
@@ -164,4 +165,18 @@ exports.increase = async (req, res) => {
   res.status(201).json({
     cart: result,
   });
+};
+exports.placeOrder = async (req, res) => {
+  try {
+    const userId = req.params.id_user;
+
+    const order = await Order.create(req.body);
+
+    await Cart.findOneAndDelete({ idUser: userId });
+
+    res.status(201).json({ order });
+  } catch (error) {
+    console.error("Error placing order:", error);
+    res.status(500).json({ message: "Đã xảy ra lỗi khi đặt hàng" });
+  }
 };
