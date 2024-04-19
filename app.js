@@ -18,6 +18,7 @@ const signInRouter = require("./src/routers/signIn");
 const homeRouter = require("./src/routers/home");
 const categoriesRouter = require("./src/routers/categories");
 const orderRouter = require("./src/routers/order");
+const productRouter = require("./src/routers/products");
 
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
@@ -41,6 +42,7 @@ app.use("/", signInRouter);
 app.use("/", loginRouter);
 app.use("/", homeRouter);
 app.use("/", categoriesRouter);
+app.use("/", productRouter);
 app.use("/", orderRouter);
 
 app.use("/", userApi);
