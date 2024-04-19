@@ -33,16 +33,20 @@ function displayCategories(categories) {
       newRow.innerHTML = `
                 <td class="h5">${category._id}</td>
                 <td class="h5">${category.name}</td>
-                <td> <img src="${imageSrc}" style="max-width: 200px; max-height: 200px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
+                <td> <img src="${imageSrc}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
             `;
     } else {
       // Ảnh Base64
       newRow.innerHTML = `
                 <td class="h5">${category._id}</td>
                 <td class="h5">${category.name}</td>
-                <td> <img src="data:image/jpeg;base64,${imageSrc}" style="max-width: 200px; max-height: 200px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
+                <td> <img src="data:image/jpeg;base64,${imageSrc}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
             `;
-    }
-    tableBody.appendChild(newRow);
-  });
+        }
+        tableBody.appendChild(newRow);
+    });
 }
+document.getElementById("add-category-btn").addEventListener('click', function(){
+    window.location.href="addcategory";
+})
+
