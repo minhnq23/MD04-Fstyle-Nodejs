@@ -1,9 +1,10 @@
-// routes/home.js
 const express = require("express");
 const router = express.Router();
 
-router.get("/home", (req, res) => {
+router.get("/products", (req, res) => {
   res.render("products");
 });
-
+router.get("/addproduct", (req, res) => {
+  res.render("addProduct");
+});
 module.exports = router;
