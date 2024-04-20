@@ -1,6 +1,28 @@
 const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
+var admin = require("firebase-admin");
+exports.testApi = async () => {
+  const registrationToken =
+    "eVjVXMM7QdWcJvZQJP7_zl:APA91bH-4erSiU7_Z-pm0jApr-OCyegF-xmZ0Ftd97011Dgv6Kw4gZI7oCZUcVfsP-_7fEm6NIvnD9r8AoEJrkR9ds1fVcY25KXxqzdkxT0-l1MQiOXQyBOMSMwdGFy9AtjlAcqMO2p2";
+  const message = {
+    data: {
+      key1: "Mã đơn hàng: ",
+      key2: "Đơn hàng của quý khác đang chờ xác nhận \n  đm Thằng khoa béo ",
+    },
+    token: registrationToken,
+  };
+
+  admin
+    .messaging()
+    .send(message)
+    .then((response) => {
+      console.log("Successfully sent message:", response);
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+    });
+};
 
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
