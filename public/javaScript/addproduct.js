@@ -37,14 +37,14 @@ fetch("/api/get/categories")
   })
   .catch((error) => console.error("Lỗi khi lấy dữ liệu thể loại:", error));
 
-function displayCategories(categories) {
-  categories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category.id;
-    option.textContent = category.name;
-    categorySelect.appendChild(option);
-  });
-}
+  function displayCategories(categories) {
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
+  }
 
 function getCategoryValue() {
   if (categorySelect.selectedIndex !== -1) {

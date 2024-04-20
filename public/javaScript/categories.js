@@ -22,7 +22,7 @@ btn_search.addEventListener("click", function (e) {
 });
 
 function displayCategories(categories) {
-  const tableBody = document.getElementById("product-table-body");
+  const tableBody = document.getElementById("product1-table-body");
   tableBody.innerHTML = ""; // Xóa bảng hiện có để hiển thị kết quả tìm kiếm mới
 
   categories.forEach((category) => {
@@ -49,4 +49,3 @@ function displayCategories(categories) {
 document.getElementById("add-category-btn").addEventListener('click', function(){
     window.location.href="addcategory";
 })
-
