@@ -17,7 +17,7 @@ const colorError = document.querySelector("#color-error");
 const descError = document.querySelector("#description-error");
 const imageErrorPro = document.querySelector("#productimage-error");
 
-let nameCategory='';
+let idCategory='';
 
 // Check required fields
 function checkRequired(inputArr) {
@@ -68,13 +68,13 @@ fetch("/api/get/categories")
     });
   }
 categorySelect.addEventListener("change", function() {
-  nameCategory = categorySelect.options[categorySelect.selectedIndex].text;
+  idCategory = categorySelect.options[categorySelect.selectedIndex].value;
 });
 
 function checkCategorySelected(){
-    if(!nameCategory &&categorySelect.options.length >0){
-      nameCategory = categorySelect.options[0].text;
-      console.log(nameCategory)
+    if(!idCategory &&categorySelect.options.length >0){
+      idCategory = categorySelect.options[0].value;
+      console.log(idCategory)
     }
 }
 //end category
@@ -127,14 +127,14 @@ addButtonPro.addEventListener("click", function (e) {
       color: colorInput.value,
       quantity: quantityInput.value,
       description: descriptionInput.value,
-      categoryId: nameCategory,
+      categoryId: idCategory,
     }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.message === "Thêm sản phẩm thành công") {
         alert(data.message);
-        window.location.href = "/products";
+        window.location.replace("/products");
       } else {
         alert(data.message);
       }
