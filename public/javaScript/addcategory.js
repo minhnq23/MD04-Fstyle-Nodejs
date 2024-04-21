@@ -22,7 +22,7 @@ function checkImageSelected(imageInput) {
 
 addButton.addEventListener('click',  function(e) {
     e.preventDefault();
-    if (!checkName(nameInput) || !checkImageSelected(imageInput)) {
+    if (!checkName(nameInputPro) || !checkImageSelected(imageInputPro)) {
         return;
     }
         fetch("/api/post/categories", {
@@ -31,8 +31,8 @@ addButton.addEventListener('click',  function(e) {
                 'Content-Type': 'application/json' 
             },
             body: JSON.stringify({
-                name: nameInput.value,
-                image: imageInput.value
+                name: nameInputPro.value,
+                image: imageInputPro.value
             })
         })
         .then(response=> response.json())
