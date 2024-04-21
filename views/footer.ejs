@@ -101,10 +101,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Stellar Parallax -->
 <script src="js/jquery.stellar.min.js"></script>
 <!-- Main -->
+<script src="/javaScript/order.js"></script>
 <script src="js/main.js"></script>
 <script src="/javaScript/home.js"></script>
 <script src="/javaScript/categories.js"></script>
+<script src="/javaScript/addcategory.js"></script>
 <script src="/javaScript/product.js"></script>
+<script src="/javaScript/addproduct.js"></script>
 <script>
     window.onload = function() {
         var defaultTitle = document.title;
@@ -113,8 +116,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             document.title = "Trang chủ - Fstyle";
         } else if (path === "/categories") {
             document.title = "Danh mục - Fstyle";
+        }else if (path === "/addcategory") {
+            document.title = "Thêm Danh mục - Fstyle";
         } else if (path === "/products") {
             document.title = "Sản phẩm - Fstyle";
+        }else if (path === "/addproduct") {
+            document.title = "Thêm Sản phẩm - Fstyle";
         } else if (path === "/about.html") {
             document.title = "Về chúng tôi - Fstyle";
         } else if (path === "/contact.html") {
