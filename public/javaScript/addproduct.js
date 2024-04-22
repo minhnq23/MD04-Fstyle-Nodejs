@@ -52,21 +52,27 @@ function showSuccess(input) {
   small.innerText = ''
 }
 //phần liên quan category
-fetch("/api/get/categories")
-  .then((response) => response.json())
-  .then((data) => {
-    displayCategories(data.categories);
-  })
-  .catch((error) => console.error("Lỗi khi lấy dữ liệu thể loại:", error));
-
-  function displayCategories(categories) {
-    categories.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category._id;
-      option.textContent = category.name;
-      categorySelect.appendChild(option);
-    });
+populateCategorySelect();
+async function loadCategories() {
+  try {
+    const response = await fetch("/api/get/categories");
+    const data = await response.json();
+    return data.categories;
+  } catch (error) {
+    console.error("Error loading categories:", error);
+    return [];
   }
+}
+
+async function populateCategorySelect() {
+  const categories = await loadCategories();
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category._id;
+    option.textContent = category.name;
+    categorySelect.appendChild(option);
+  });
+}
 categorySelect.addEventListener("change", function() {
   idCategory = categorySelect.options[categorySelect.selectedIndex].value;
 });
@@ -112,8 +118,11 @@ addButtonPro.addEventListener("click", function (e) {
   if (checkRequired([nameInputPro, brandInput, priceInput, quantityInput, colorInput, descriptionInput,imageInputPro])&&!checkSizeSelected()) {
     return;
   }
+  createProduct()
+});
+async function createProduct(){
   const arrayImage = imageInputPro.value.split(',')
-  fetch("/api/products", {
+  const newProduct = await fetch("/api/products", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -130,16 +139,11 @@ addButtonPro.addEventListener("click", function (e) {
       categoryId: idCategory,
     }),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message === "Thêm sản phẩm thành công") {
-        alert(data.message);
+    const data = await newProduct.json()
+      if (data.message === "Sản phẩm được thêm thành công") {
+        alert(data.message)
         window.location.replace("/products");
       } else {
         alert(data.message);
       }
-    })
-    .catch((err) => {
-      console.log("Lỗi: " + err);
-    });
-});
+}
