@@ -123,3 +123,26 @@ exports.deleteProduct = async (req, res) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
+exports.getProductsById = async (req,res)=>{
+  const idCategory = req.params.id
+  let arrProduct=[];
+  try{
+    const products =await Product.find().lean();
+    products.map((product)=> {
+      if(product.category == idCategory){
+        arrProduct.push(product)
+      }
+    })
+  
+   if(arrProduct.length !=0){
+     res.status(200).json({
+      status:200, 
+      message:"thành công",
+      products:arrProduct})
+   }else{
+    res.status(404).json({status:404, message:"Không tìm thấy sản phẩm",products:[]})
+   }
+  }catch(error){
+    res.status(400).json({status: 400, message: error.message })
+  }
+}

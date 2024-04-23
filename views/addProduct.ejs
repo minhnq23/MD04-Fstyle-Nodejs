@@ -1,9 +1,9 @@
 <%- include('header') -%>
 
-<div class="colorlib-product">
+<div class="colorlib-product" style="padding-top: 40px;">
   <div class="container">
     <div class="row">
-      <div class="col-sm-8 offset-sm-2 text-center colorlib-heading">
+      <div class="col-sm-8 offset-sm-2 text-center colorlib-heading" style="margin-bottom: 30px;">
         <h2>Thêm Sản Phẩm</h2>
       </div>
     </div>
@@ -11,10 +11,10 @@
       <div class="col-sm-8 offset-sm-2">
         <form
           id="add-product-form"
-          style="max-width: 400px; margin: auto"
+          style="max-width: 500px; margin: auto; border: 1px solid #ccc;"
           enctype="multipart/form-data"
         >
-          <div class="form-group">
+          <div class="form-group mx-4 mt-1">
             <label for="product-name" class="h5">Tên Sản Phẩm:</label>
             <input
               type="text"
@@ -27,7 +27,7 @@
           </div>
           <div class="form-row">
             <div class="col">
-              <div class="form-group">
+              <div class="form-group ml-4 mt-1">
                 <label for="product-brand" class="h5">Thương Hiệu:</label>
                 <input
                   type="text"
@@ -40,7 +40,7 @@
               </div>
             </div>
             <div class="col">
-              <div class="form-group">
+              <div class="form-group mr-4 mt-1">
                 <label for="product-price" class="h5">Giá:</label>
                 <input
                   type="number"
@@ -54,7 +54,7 @@
             </div>
           </div>
   
-          <div class="form-group row" style="margin-left: 5px;">
+          <div class="form-group row mx-4 mt-1" style="margin-left: 5px;">
             <label for="product-size" class="col-sm-5 col-form-label h5">Kích Cỡ:</label>
             <div class="col-sm-10">
               <div class="form-check form-check-inline">
@@ -78,12 +78,12 @@
                 <label class="form-check-label" for="size-40">40</label>
               </div>
             </div>
-            <small id="size-error" style="margin-left: 15px;">1</small>
+            <small id="size-error" style="margin-left: 15px;"></small>
           </div>
           
           <div class="form-row">
             <div class="col">
-              <div class="form-group">
+              <div class="form-group ml-4 mt-1">
                 <label for="product-quantity" class="h5">Số Lượng:</label>
                 <input
                   type="number"
@@ -96,7 +96,7 @@
               </div>
             </div>
             <div class="col">
-              <div class="form-group">
+              <div class="form-group mr-4 mt-1">
                 <label for="product-color" class="h5">Màu Sắc:</label>
                 <input
                   type="text"
@@ -109,7 +109,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group mx-4 mt-1">
             <label for="product-description" class="h5"
               >Miêu Tả Sản Phẩm:</label
             >
@@ -121,7 +121,7 @@
             ></textarea>
             <small id="description-error"></small>
           </div>
-          <div class="form-group">
+          <div class="form-group mx-4 mt-1">
             <label for="roduct-category-name" class="h5">Chọn Thể Loại:</label>
             <select
               class="form-control"
@@ -130,13 +130,13 @@
             ></select>
             <small id="categoryname-error"></small>
           </div>
-          <div class="form-group">
+          <div class="form-group mx-4 mt-1">
             <label for="product-image" class="h5">Ảnh:</label>
             <textarea
             class="form-control"
             id="product-image"
             name="image"
-            placeholder="Nhập link ảnh sản phẩm, mỗi link trên một dòng"
+            placeholder="Nhập link ảnh sản phẩm, thêm dấu ' , ' sau mỗi link ảnh"
             rows="4"
           ></textarea>
             <small id="productimage-error"></small>
