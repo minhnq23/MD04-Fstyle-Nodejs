@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "Name Product",
       },
-      quantity: {
+      soLuong: {
         type: Number,
         default: 1,
       },
