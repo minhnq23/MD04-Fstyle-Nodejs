@@ -1,5 +1,6 @@
 const express = require("express");
 const Cart = require("../models/cart");
+const Order = require("../models/orders");
 const UserModel = require("../models/user");
 const mongoose = require("mongoose");
 
@@ -31,7 +32,6 @@ exports.addCart = async (req, res) => {
       imageDefault: product.imageDefault,
     });
   }
-
 
   result.totalCart += parseFloat(product.price) * parseFloat(product.soLuong);
   result.totalProduct += product.soLuong;
@@ -168,7 +168,38 @@ exports.increase = async (req, res) => {
 
     total += parseFloat(product.price) * parseFloat(product.soLuong);
 
-    
+    sum += product.soLuong;
+
+    console.log(product);
+  }
+
+  console.log(result.listProduct);
+  result.totalCart = total;
+  result.totalProduct = sum;
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
+  });
+};
+exports.clearProduct = async (req, res) => {
+  const userId = req.params.id_user;
+  const productId = req.params.id_product;
+  console.log(userId);
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
+  let newList = [];
+
+  result.listProduct = newList;
+
+  let total = 0;
+  let sum = 0;
+
+  for (let i = 0; i < result.listProduct.length; i++) {
+    const product = result.listProduct[i];
+
+    total += parseFloat(product.price) * parseFloat(product.soLuong);
     sum += product.soLuong;
 
     console.log(product);
