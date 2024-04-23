@@ -77,6 +77,10 @@ const orderSchema = new mongoose.Schema({
     default: "active",
     required: true,
   },
+  customerName:{
+    type:String,
+    required: true
+  }
 });
 
 const OrderModel = mongoose.model("orders", orderSchema);
