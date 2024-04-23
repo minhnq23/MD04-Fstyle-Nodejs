@@ -182,14 +182,35 @@ exports.increase = async (req, res) => {
     cart: result,
   });
 };
-exports.placeOrder = async (req, res) => {
-  try {
-    const userId = req.params.id_user;
-    const order = await Order.create(req.body);
-    await Cart.findOneAndDelete({ idUser: userId });
-    res.status(201).json({ order });
-  } catch (error) {
-    console.error("Error placing order:", error);
-    res.status(500).json({ message: "Đã xảy ra lỗi khi đặt hàng" });
+exports.clearProduct = async (req, res) => {
+  const userId = req.params.id_user;
+  const productId = req.params.id_product;
+  console.log(userId);
+  let result = await Cart.findOne({
+    idUser: userId,
+  });
+  let newList = [];
+
+  result.listProduct = newList;
+
+  let total = 0;
+  let sum = 0;
+
+  for (let i = 0; i < result.listProduct.length; i++) {
+    const product = result.listProduct[i];
+
+    total += parseFloat(product.price) * parseFloat(product.soLuong);
+    sum += product.soLuong;
+
+    console.log(product);
   }
+
+  console.log(result.listProduct);
+  result.totalCart = total;
+  result.totalProduct = sum;
+
+  await result.save();
+  res.status(201).json({
+    cart: result,
+  });
 };
