@@ -1,6 +1,7 @@
 const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
+const Product = require('../models/product')
 var admin = require("firebase-admin");
 const router = require("../api/orderApi");
 exports.createOrder = async (req, res) => {
@@ -133,6 +134,11 @@ exports.updateOrderStatus = async (req, res) => {
       break;
       case 'delivered':
       order.timeSuccess = new Date();
+      for(const product of order.listProduct){
+        await Product.findByIdAndUpdate(product.idProduct,{
+          $inc:{quantity: -product.soLuong}
+        })
+      }
       break;
      
    }
@@ -241,4 +247,5 @@ const sendNotifications = (req, res) => {
       console.error("Error sending message:", error);
     });
 };
+
 
