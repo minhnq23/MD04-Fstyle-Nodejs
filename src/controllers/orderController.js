@@ -2,7 +2,6 @@ const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
 var admin = require("firebase-admin");
-
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
   const {
@@ -13,6 +12,7 @@ exports.createOrder = async (req, res) => {
     shippingMethod,
     status,
     totalPrice,
+    customerName
   } = req.body;
 
   // let totalPrice = 0;
@@ -29,6 +29,7 @@ exports.createOrder = async (req, res) => {
     shippingMethod,
     totalPrice,
     status,
+    customerName
   });
   let user = await UserModel.findById(idUser).lean();
   console.log("====================================");

@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "Name Product",
       },
-      quantity: {
+      soLuong: {
         type: Number,
         default: 1,
       },
@@ -77,6 +77,9 @@ const orderSchema = new mongoose.Schema({
     default: "active",
     required: true,
   },
+  customerName:{
+    type:String,
+  }
 });
 
 const OrderModel = mongoose.model("orders", orderSchema);

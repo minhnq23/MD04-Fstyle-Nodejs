@@ -11,7 +11,7 @@ fetch("/api/products")
         </a>
         <div class="desc">
           <h2><a href="#">${product.name}</a></h2>
-          <span class="price">${product.price} VNĐ</span>
+          <span class="price">${product.price.toLocaleString()} VNĐ</span>
         </div>
       </div>
     </div>

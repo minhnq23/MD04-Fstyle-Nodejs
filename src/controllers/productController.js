@@ -4,21 +4,6 @@ const UserModel = require("../models/user");
 const mongoose = require("mongoose");
 const Category = require("../models/category");
 
-const updateSoldQuantity = async (productId, quantity) => {
-  try {
-    const product = await Product.findById(productId);
-    if (!product) {
-      throw new Error("Không tìm thấy sản phẩm");
-    }
-    // Cập nhật số lượng sản phẩm đã bán bằng cách thêm số lượng mua
-    product.soldQuantity += quantity;
-    // Lưu thay đổi vào cơ sở dữ liệu
-    await product.save();
-  } catch (error) {
-    console.error("Lỗi khi cập nhật số lượng đã bán:", error);
-    throw error;
-  }
-};
 exports.createProduct = async (req, res) => {
   try {
     const {
@@ -90,8 +75,6 @@ exports.updateProduct = async (req, res) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
-
-// Lấy danh sách tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().lean();
@@ -104,8 +87,6 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ status: 500, message: error.message });
   }
 };
-
-// Lấy thông tin sản phẩm theo ID
 exports.getProduct = async (req, res) => {
   const productId = req.params.id;
 
@@ -124,8 +105,6 @@ exports.getProduct = async (req, res) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
-
-// Xoá sản phẩm theo ID
 exports.deleteProduct = async (req, res) => {
   const id = req.params.id;
 
@@ -142,18 +121,5 @@ exports.deleteProduct = async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ status: 400, message: error.message });
-  }
-};
-
-// Mua sản phẩm (tăng số lượng đã bán)
-exports.purchaseProduct = async (req, res) => {
-  const { productId, quantity } = req.body;
-
-  try {
-    // Cập nhật số lượng đã bán
-    await updateSoldQuantity(productId, quantity);
-    res.status(200).json({ message: "Mua hàng thành công" });
-  } catch (error) {
-    res.status(500).json({ error: "Mua hàng thất bại" });
   }
 };
