@@ -16,11 +16,11 @@ exports.createOrder = async (req, res) => {
     customerName
   } = req.body;
   console.log(totalPrice)
-  // let totalPrice = 0;
-  // for (const product of listProduct) {
-  //   totalPrice += product.price * product.quantity;
-  // }
-
+  let totalProduct = 0;
+  for (const product of listProduct) {
+    totalProduct += product.soLuong;
+  }
+  
   const newOrder = new Order({
     address,
     listProduct,
@@ -28,6 +28,7 @@ exports.createOrder = async (req, res) => {
     phone,
     paymentMethods,
     shippingMethod,
+    totalProduct,
     totalPrice,
     status,
     customerName
@@ -120,8 +121,24 @@ exports.updateOrderStatus = async (req, res) => {
 
     const oldStatus = order.status;
     order.status = status;
+   switch(status){
+      case 'active':
+      order.timeConfirm = new Date();
+      break;
+      case 'trading':
+      order.timeDelivery = new Date();
+      break;
+      case 'deactive':
+      order.timeCancel = new Date();
+      break;
+      case 'delivered':
+      order.timeSuccess = new Date();
+      break;
+     
+   }
+    
     await order.save();
-
+   
     if (oldStatus !== status) {
       const user = await UserModel.findById(order.idUser).lean();
       const registrationToken = user.tokenDevice;

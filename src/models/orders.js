@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema({
     ref: 'user',
     required: true
   },
-  quantity: {
+  totalProduct: {
     type: Number,
     default: 1,
   },
@@ -62,19 +62,22 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  timeConfirm:{
+   type: Date,
+  },
   timeDelivery: {
     type: Date,
   },
   timeCancel: {
     type: Date,
   },
-  thoiGianDangGiao: {
+  timeSuccess: {
     type: Date,
   },
   status: {
     type: String,
     enum: ["active", "deactive","pending","trading","delivered"],
-    default: "active",
+    default: "pending",
     required: true,
   },
   customerName:{
