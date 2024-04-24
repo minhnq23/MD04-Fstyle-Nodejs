@@ -28,6 +28,10 @@ const ProductSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  soldQuantity: {
+    type: Number,
+    default: 0,
+  },
 
   isFavorite: {
     type: Boolean,
