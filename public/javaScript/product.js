@@ -1,17 +1,17 @@
 const query_search_product = document.getElementById("query-search-product");
 const btn_search_product = document.getElementById("btn-search");
 let dataProducts = [];
-let dataCategory2=[];
+let dataCategory2 = [];
 fetch("/api/get/categories")
-.then(res =>res.json())
-.then(data =>{
-  dataCategory2 = data.categories;
-})
-.catch(err=> console.log("err:", err))
+  .then((res) => res.json())
+  .then((data) => {
+    dataCategory2 = data.categories;
+  })
+  .catch((err) => console.log("err:", err));
 //
-function getNamecategoryById(categoryId, listCategory){
-   const category = listCategory.find(cat => cat._id === categoryId);
-   return category?category.name : null;
+function getNamecategoryById(categoryId, listCategory) {
+  const category = listCategory.find((cat) => cat._id === categoryId);
+  return category ? category.name : null;
 }
 //
 fetch("/api/products")
@@ -55,7 +55,10 @@ function displayProducts(products) {
         <td class="h5">${product.quantity}</td>
         <td class="h5">${product.status}</td>
         <td class="h5">${product.description}</td>
-        <td class="h5">${getNamecategoryById(product.category,dataCategory2)}</td>
+        <td class="h5">${getNamecategoryById(
+          product.category,
+          dataCategory2
+        )}</td>
       `;
     } else {
       newRow.innerHTML = `
@@ -69,7 +72,9 @@ function displayProducts(products) {
     tableBody1.appendChild(newRow);
   });
 }
-document.getElementById('add-product-btn').addEventListener('click', function(e){
-  e.preventDefault();
-  window.location.href="/addproduct";
-})
+document
+  .getElementById("add-product-btn")
+  .addEventListener("click", function (e) {
+    e.preventDefault();
+    window.location.href = "/addproduct";
+  });
