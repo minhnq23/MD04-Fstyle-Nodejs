@@ -2,6 +2,7 @@ const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
 var admin = require("firebase-admin");
+const router = require("../api/orderApi");
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
   const {
@@ -14,7 +15,7 @@ exports.createOrder = async (req, res) => {
     totalPrice,
     customerName
   } = req.body;
-
+  console.log(totalPrice)
   // let totalPrice = 0;
   // for (const product of listProduct) {
   //   totalPrice += product.price * product.quantity;
@@ -223,3 +224,4 @@ const sendNotifications = (req, res) => {
       console.error("Error sending message:", error);
     });
 };
+

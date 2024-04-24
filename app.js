@@ -19,7 +19,7 @@ const homeRouter = require("./src/routers/home");
 const categoriesRouter = require("./src/routers/categories");
 const orderRouter = require("./src/routers/order");
 const productRouter = require("./src/routers/products");
-
+const statisticalRouter = require("./src/routers/statistical");
 const userApi = require("./src/api/userApi");
 const productsApi = require("./src/api/productApi");
 const categoryApi = require("./src/api/categoryApi");
@@ -44,7 +44,7 @@ app.use("/", homeRouter);
 app.use("/", categoriesRouter);
 app.use("/", productRouter);
 app.use("/", orderRouter);
-
+app.use("/", statisticalRouter);
 app.use("/", userApi);
 app.use("/", AddressApi);
 app.use("/", categoryApi);
