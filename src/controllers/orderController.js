@@ -12,6 +12,7 @@ exports.createOrder = async (req, res) => {
     shippingMethod,
     status,
     totalPrice,
+    customerName
   } = req.body;
 
   // let totalPrice = 0;
@@ -28,6 +29,7 @@ exports.createOrder = async (req, res) => {
     shippingMethod,
     totalPrice,
     status,
+    customerName
   });
   let user = await UserModel.findById(idUser).lean();
   console.log("====================================");
