@@ -18,21 +18,28 @@
                 <label for="statusSelect">Trạng thái đơn hàng:</label>
                 <select class="form-control" id="statusSelect">
                   <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                  <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>Processing</option>
-                  <option value="completed" <%= order.status === 'completed' ? 'selected' : '' %>>Completed</option>
-                  <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                  <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Trading</option>
+                  <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                  <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Active</option>
+                  <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Deactive</option>
                 </select>
               </div>
 
-              <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;<%= order.status %></p>
-              <!-- <div class="modal-body">
-                <p id="confirmTime" class="d-none">Thời gian xác nhận đơn hàng: <%= order.confirmTime %></p>
-                <p id="cancelTime" class="d-none">Thời gian huỷ đơn hàng: <%= order.cancelTime %></p>
-                <p id="deliveryTime" class="d-none">Thời gian giao xong: <%= order.deliveryTime %></p>
-                <div id="timeInfo">
-                  
-                </div>
-              </div> -->
+              <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;<%= order.status %></p>   
+              <div id="timeInfo">
+                <% if (order.timeConfirm !== null && order.timeConfirm !== undefined) { %>
+                  <p class="row"><strong class="font-weight-bold">Thời gian xác nhận đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeConfirm %></p>
+                <% } %>
+                <% if (order.timeDelivery !== null && order.timeDelivery !== undefined) { %>
+                  <p class="row"><strong class="font-weight-bold">Thời gian bắt đầu giao hàng:</strong> &nbsp;&nbsp;<%= order.timeDelivery %></p>
+                <% } %>
+                <% if (order.timeCancel !== null && order.timeCancel !== undefined) { %>
+                  <p class="row"><strong class="font-weight-bold">Thời gian hủy đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeCancel %></p>
+                <% } %>
+                <% if (order.timeSuccess !== null && order.timeSuccess !== undefined) { %>
+                  <p class="row"><strong class="font-weight-bold">Thời gian giao hàng thành công:</strong> &nbsp;&nbsp;<%= order.timeSuccess %></p>
+                <% } %>
+              </div>
               
               
             
@@ -108,19 +115,59 @@
     </div>
   </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  
+ $(document).ready(function () {
   $(document).ready(function () {
-    $("#statusSelect").change(function () {
-      $("#confirmModal").modal("show");
-    });
+  $("#statusSelect").change(function () {
+    var status = $(this).val();
+    $(".modal-body p").addClass("d-none");
+    switch (status) {
+      case 'pending':
+        $("#timeInfo").empty(); 
+        break;
+      case 'timeSuccess':
+        var timeSuccess = $("#timeSuccess").text();
+        if (timeSuccess !== "" && timeSuccess !== "null" && timeSuccess !== undefined) {
+          $("#timeInfo").html("<p>Giao hàng thành công: " + timeSuccess + "</p>");
+        }
+        break;
+      case 'trading':
+        var tradingTime = $("#tradingTime").text();
+        if (tradingTime !== "" && trading !== "null") {
+          $("#timeInfo").html("<p>Thời gian bắt đầu giao xong: " + tradingTime + "</p>");
+        }
+        break;
+      case 'active':
+        var confirmTime = $("#confirmTime").text();
+        if (confirmTime !== "" && confirmTime !== "null" && confirmTime !== undefined) {
+          $("#timeInfo").html("<p>Thời gian xác nhận đơn hàng: " + confirmTime + "</p>");
+        }
+        break;
+      case 'deactive':
+        var cancelTime = $("#cancelTime").text(); // Assuming you have a hidden element with ID "cancelTime"
+        if (cancelTime !== "" && cancelTime !== "null" && cancelTime !== undefined) {
+          $("#timeInfo").html("<p>Thời gian hủy đơn hàng: " + cancelTime + "</p>");
+        }
+        break;
+    }
+    // Hiển thị modal
+    $("#confirmModal").modal("show");
+  });
+});
+
+  
+  
 
     $("#confirmStatusBtn").click(function () {
+  var confirmTime = $("#confirmTime").text();
+  var deliveryTime = $("#deliveryTime").text();
+  var cancelTime = $("#cancelTime").text();
       var newStatus = $("#statusSelect").val();
       $.ajax({
-        url: "/<%= order._id %>/update-status",
-        type: "POST",
+        url: "/api/orders/<%= order._id %>",
+        type: "PUT",
         data: { status: newStatus },
         success: function (response) {
           showAlert("success", "Trạng thái đơn hàng đã được cập nhật thành công!");
@@ -136,47 +183,13 @@
 
     function showAlert(type, message) {
       const alertClass = type === "success" ? "alert-success" : "alert-danger";
-      const alert = $(
-        '<div class="alert ' +
-          alertClass +
-          '" role="alert">' +
-          message +
-          "</div>"
-      );
+      const alert = $('<div class="alert ' + alertClass + '" role="alert">' + message + "</div>");
       $("body").append(alert);
       setTimeout(function () {
         $(alert).remove();
       }, 5000);
     }
   });
-  // $(document).ready(function () {
-  //   $("#statusSelect").change(function () {
-  //     // Lấy giá trị của trạng thái đơn hàng được chọn
-  //     var status = $(this).val();
-  //     // Ẩn tất cả các mục thời gian trước khi hiển thị lại
-  //     $(".modal-body p").addClass("d-none");
-  //     // Hiển thị mục thời gian tương ứng với trạng thái đơn hàng được chọn
-  //     switch (status) {
-  //       case 'pending':
-  //         $("#timeInfo").empty(); // Xóa bỏ các thông tin thời gian hiện có
-  //         break;
-  //       case 'trading':
-  //         $("#timeInfo").html($("#confirmTime").html());
-  //         break;
-  //       case 'delivered':
-  //         $("#timeInfo").html($("#deliveryTime").html());
-  //         break;
-  //       case 'active':
-  //         // Thêm code xử lý cho trạng thái "active" ở đây
-  //         break;
-  //       case 'deactive':
-  //         // Thêm code xử lý cho trạng thái "deactive" ở đây
-  //         break;
-  //     }
-  //     // Hiển thị modal
-  //     $("#confirmModal").modal("show");
-  //   });
-  // });
 </script>
 
 <%- include('footer') -%>
