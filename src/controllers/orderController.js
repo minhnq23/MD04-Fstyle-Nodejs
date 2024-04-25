@@ -136,7 +136,10 @@ exports.updateOrderStatus = async (req, res) => {
         order.timeSuccess = new Date();
         for (const product of order.listProduct) {
           await Product.findByIdAndUpdate(product.idProduct, {
-            $inc: { quantity: -product.soLuong },
+            $inc: {
+              quantity: -product.soLuong,
+              soldQuantity: +product.soLuong,
+            },
           });
         }
         break;
