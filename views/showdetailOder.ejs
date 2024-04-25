@@ -14,18 +14,40 @@
               <p class="row">
                 <strong class="font-weight-bold">Thời gian đặt hàng:</strong> &nbsp;&nbsp;<%= order.timeOrder %>
               </p>
-              <div class="form-group">
+                <div class="form-group">
                 <label for="statusSelect">Trạng thái đơn hàng:</label>
                 <select class="form-control" id="statusSelect">
-                  <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                  <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Trading</option>
-                  <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
-                  <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Active</option>
-                  <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Deactive</option>
+                  <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Chờ xác nhận</option>
+                  <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
+                  <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
+                  <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Xác nhận</option>
+                  <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Đã hủy</option>
                 </select>
               </div>
 
-              <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;<%= order.status %></p>   
+              <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;
+                <%
+                switch (order.status) {
+                  case 'pending':
+                    %>Đang xử lý<%
+                    break;
+                  case 'trading':
+                    %>Đang giao<%
+                    break;
+                  case 'delivered':
+                    %>Đã giao<%
+                    break;
+                  case 'active':
+                    %>Xác nhận<%
+                    break;
+                    case 'deactive':
+                    %>Đã hủy<%
+                    break;
+                  default:
+                    %>Trạng thái không xác định<%
+                }
+                %>
+                </p> 
               <div id="timeInfo">
                 <% if (order.timeConfirm !== null && order.timeConfirm !== undefined) { %>
                   <p class="row"><strong class="font-weight-bold">Thời gian xác nhận đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeConfirm %></p>
@@ -54,7 +76,19 @@
                 <strong class="font-weight-bold">Phương thức thanh toán:</strong>&nbsp;&nbsp; <%= order.paymentMethods %>
               </p>
               <p class="row">
-                <strong class="font-weight-bold">Phương thức giao hàng:</strong>&nbsp;&nbsp; <%= order.shippingMethod %>
+                <strong class="font-weight-bold">Phương thức giao hàng:</strong>&nbsp;&nbsp;
+                <% 
+                switch (order.shippingMethod) {
+                  case 'standard':
+                    %>Giao hàng tiết kiệm<%
+                    break;
+                  case 'express':
+                    %>Giao hàng nhanh<%
+                    break;
+                  default:
+                    %>Phương thức giao hàng không xác định<%
+                }
+                %>
               </p>
             </div>
           </div>
