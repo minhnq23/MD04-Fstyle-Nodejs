@@ -8,13 +8,13 @@ exports.changeQuantity = async(req,res)=>{
   const productId = req.params.id
   const products = await Product.findById(productId)
   if(!products){
-    res.status(404).json({message:"Không tìm thấy sản phẩm"})
+    res.status(404).json({status:404,message:"Không tìm thấy sản phẩm"})
   }else{
     const updateQuantity = await Product.findByIdAndUpdate(productId,{quantity:0})
     if(updateQuantity){
-      res.status(200).json({message:"update thành công"})
+      res.status(200).json({status:200,message:"update thành công"})
     }else{
-      res.status(400).json({message:"update thất bại"})
+      res.status(404).json({status:404,message:"update thất bại"})
     }
   }
 }
