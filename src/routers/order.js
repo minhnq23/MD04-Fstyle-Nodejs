@@ -11,6 +11,16 @@ const validateObjectId = (req, res, next) => {
   }
   next();
 };
+router.get("/statistical", async (req, res) => {
+  try {
+    const orders = await Order.find();
+
+    res.render("statistical", { orders });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error processing request");
+  }
+});
 
 router.get("/order", (req, res) => {
   res.render("order");
@@ -33,24 +43,6 @@ router.get("/:orderId", validateObjectId, async (req, res) => {
   } catch (err) {
     console.error("Error retrieving order details:", err);
     res.status(500).send("Error retrieving order details");
-  }
-});
-
-router.post("/:orderId/confirm", validateObjectId, async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-    order.status = "active";
-    await order.save();
-    res
-      .status(200)
-      .json({ message: "Order confirmed successfully", order: order });
-  } catch (error) {
-    console.error("Error confirming order:", error);
-    res.status(500).json({ message: "Error confirming order" });
   }
 });
 
