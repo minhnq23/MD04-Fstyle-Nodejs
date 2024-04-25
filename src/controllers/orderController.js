@@ -1,7 +1,9 @@
 const express = require("express");
 const Order = require("../models/orders");
 const UserModel = require("../models/user");
+const Product = require('../models/product')
 var admin = require("firebase-admin");
+const router = require("../api/orderApi");
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
   const {
@@ -14,12 +16,12 @@ exports.createOrder = async (req, res) => {
     totalPrice,
     customerName
   } = req.body;
-
-  // let totalPrice = 0;
-  // for (const product of listProduct) {
-  //   totalPrice += product.price * product.quantity;
-  // }
-
+  console.log(totalPrice)
+  let totalProduct = 0;
+  for (const product of listProduct) {
+    totalProduct += product.soLuong;
+  }
+  
   const newOrder = new Order({
     address,
     listProduct,
@@ -27,6 +29,7 @@ exports.createOrder = async (req, res) => {
     phone,
     paymentMethods,
     shippingMethod,
+    totalProduct,
     totalPrice,
     status,
     customerName
@@ -119,8 +122,29 @@ exports.updateOrderStatus = async (req, res) => {
 
     const oldStatus = order.status;
     order.status = status;
+   switch(status){
+      case 'active':
+      order.timeConfirm = new Date();
+      break;
+      case 'trading':
+      order.timeDelivery = new Date();
+      break;
+      case 'deactive':
+      order.timeCancel = new Date();
+      break;
+      case 'delivered':
+      order.timeSuccess = new Date();
+      for(const product of order.listProduct){
+        await Product.findByIdAndUpdate(product.idProduct,{
+          $inc:{quantity: -product.soLuong}
+        })
+      }
+      break;
+     
+   }
+    
     await order.save();
-
+   
     if (oldStatus !== status) {
       const user = await UserModel.findById(order.idUser).lean();
       const registrationToken = user.tokenDevice;
@@ -223,3 +247,5 @@ const sendNotifications = (req, res) => {
       console.error("Error sending message:", error);
     });
 };
+
+
