@@ -1,7 +1,8 @@
-const express = require('express')
-const routers = express.Router();
+const express = require("express");
+const router = express.Router();
 
-routers.get("/statistical",(req,res)=>{
-    res.render('statistical')
-})
-module.exports= routers
+router.get("/statistical", (req, res) => {
+  res.render("statistical");
+});
+
+module.exports = router;
