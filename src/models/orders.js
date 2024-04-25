@@ -25,16 +25,15 @@ const orderSchema = new mongoose.Schema({
       size: {
         type: String,
       },
-      imageDefault:{
+      imageDefault: {
         type: String,
-      }
-
+      },
     },
   ],
   idUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
+    ref: "user",
+    required: true,
   },
   quantity: {
     type: Number,
@@ -53,7 +52,7 @@ const orderSchema = new mongoose.Schema({
     enum: ["COD", "Sandbox"],
     default: "COD",
   },
-  shippingMethod: { 
+  shippingMethod: {
     type: String,
     enum: ["standard", "express"],
     default: "standard",
@@ -73,13 +72,13 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "deactive","pending","trading","delivered"],
+    enum: ["active", "deactive", "pending", "trading", "delivered"],
     default: "active",
     required: true,
   },
-  customerName:{
-    type:String,
-  }
+  customerName: {
+    type: String,
+  },
 });
 
 const OrderModel = mongoose.model("orders", orderSchema);
