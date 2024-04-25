@@ -47,7 +47,7 @@ async function displayProducts(products) {
       <td class="h5">${product.price.toLocaleString()}</td>
       <td class="h5">${product.color}</td>
       <td class="h5">${product.quantity}</td>
-      <td class="h5">${product.status}</td>
+      <td class="h5">${product.quantity===0 ?"Hết hàng": "Còn hàng"}</td>
       <td class="h5">${product.description}</td>
       <td class="h5">${await getNamecategory(product.category)}</td>
     `;
