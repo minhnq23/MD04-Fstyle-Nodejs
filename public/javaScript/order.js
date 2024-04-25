@@ -15,11 +15,24 @@ function displayOrder(orders) {
   orders.forEach((order) => {
     const newRow = document.createElement("tr");
     newRow.setAttribute("data-order-id", order._id);
+    let statusText = order.status; 
+    if (order.status === "pending") {
+      statusText = "Chờ xác nhận"; 
+    } else if (order.status == "active") {
+      statusText = "Xác nhận"
+    } else if (order.status == "deactive") {
+      statusText = "Đã hủy"
+    } else if (order.status == "trading") {
+      statusText = "Đang giao"
+    } else if (order.status == "delivered") {
+      statusText = "Đã giao"
+    }
+
     newRow.innerHTML = `
         <td class= 'h6'>${order._id}</td>
         <td class= 'h6'>${order.idUser}</td>
         <td class= 'h6'>${order.quantity}</td>
-        <td class= 'h6'>${order.status}</td>
+        <td class= 'h6'>${statusText}</td>
         <td class= 'h6'>${order.timeOrder}</td>
         <a href="${order._id}" style="color: #007bff; text-decoration: none; text-align: center; display: block;">Chi tiết</a>
        
