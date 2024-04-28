@@ -3,6 +3,35 @@ const endDate = document.getElementById("end-date-i");
 const startDateString = document.getElementById("startDate");
 const endDateString = document.getElementById("endDate");
 
+// function checkRequired2(inputArr){
+//       let isRequired = false
+//       inputArr.forEach(input=>{
+//        if(input.value.trim()===''){
+//         showError(input,`*${getFieldName(input)} is required` )
+//         isRequired =true
+//        }else{
+//         showSuccess(input)
+//        }
+//       })
+//       return isRequired
+// }
+// function getFieldName(input) {
+//   return input.name.charAt(0).toUpperCase() + input.name.slice(1)
+// }
+// function showError(input, message) {
+//   const formControl = input.parentElement
+//   formControl.className = 'form-control error'
+//   const small = formControl.querySelector('small')
+//   small.innerText = message
+//   small.style.color = 'red'
+// }
+// // Show success outline
+// function showSuccess(input) {
+//   const formControl = input.parentElement
+//   formControl.className = 'form-control success'
+//   const small = formControl.querySelector('small')
+//   small.innerText = ''
+// }
 $(document).ready(function () {
   $(startDate).datepicker({
     format: "dd/mm/yyyy",
@@ -36,21 +65,34 @@ $(document).ready(function () {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${year}-${month}-${day}`;
   }
 
   document
     .getElementById("showCalendarBtn")
     .addEventListener("click", function (e) {
       e.preventDefault();
-      const parts = startDateString.value.split("/").join("");
+      const parts = startDateString.value.split("-").join("");
       const numberStartdate = parseInt(parts, 10);
-      const parts2 = endDateString.value.split("/").join("");
+      const parts2 = endDateString.value.split("-").join("");
       const numberEnddate = parseInt(parts2, 10);
-      console.log(parts, parts2);
-      if (numberStartdate > numberEnddate) {
+      console.log(startDateString.value, endDateString.value);
+      // if(checkRequired2([startDateString,endDateString])){
+      //   return
+      // }
+      if (numberStartdate >= numberEnddate ) {
         alert("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
         return;
       }
+      fetch(`/api/totalAmout?startDate=${new Date(startDateString.value)}&endDate=${new Date(endDateString.value)}`)
+      .then(res => res.json())
+      .then(data => {
+        if(data.message ==="success"){
+          document.getElementById("result_total").textContent=`Doanh thu từ ${startDateString.value} đến ${endDateString.value} là: ${data.total.toLocaleString()} VNĐ`
+          document.getElementById("result_total").style.fontWeight ='bold' 
+        }else{
+          alert(data.message)
+        }
+      })
     });
 });
