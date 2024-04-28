@@ -21,6 +21,16 @@ router.get("/statistical", async (req, res) => {
     res.status(500).send("Error processing request");
   }
 });
+router.get("/user", async (req, res) => {
+  try {
+    const users = await User.find(); // Lấy tất cả người dùng từ MongoDB
+
+    res.render("userManager", { users: users });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Lỗi khi lấy danh sách người dùng");
+  }
+});
 
 router.get("/order", (req, res) => {
   res.render("order");
