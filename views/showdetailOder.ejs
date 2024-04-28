@@ -12,7 +12,7 @@
               <h3 class="font-weight-bold">Thông tin đặt hàng</h3>
               <p class="row"><strong class="font-weight-bold">ID Đơn hàng:</strong> &nbsp;&nbsp;<%= order._id %></p>
               <p class="row">
-                <strong class="font-weight-bold">Thời gian đặt hàng:</strong> &nbsp;&nbsp;<%= order.timeOrder %>
+                <strong class="font-weight-bold">Thời gian đặt hàng:</strong> &nbsp;&nbsp;<%= order.timeOrder.toLocaleString() %>
               </p>
                 <p class="row">
                 <div class="form-group">
@@ -51,16 +51,16 @@
                 </p> 
               <div id="timeInfo">
                 <% if (order.timeConfirm !== null && order.timeConfirm !== undefined) { %>
-                  <p class="row"><strong class="font-weight-bold">Thời gian xác nhận đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeConfirm %></p>
+                  <p class="row"><strong class="font-weight-bold">Thời gian xác nhận đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeConfirm.toLocaleString() %></p>
                 <% } %>
                 <% if (order.timeDelivery !== null && order.timeDelivery !== undefined) { %>
-                  <p class="row"><strong class="font-weight-bold">Thời gian bắt đầu giao hàng:</strong> &nbsp;&nbsp;<%= order.timeDelivery %></p>
+                  <p class="row"><strong class="font-weight-bold">Thời gian bắt đầu giao hàng:</strong> &nbsp;&nbsp;<%= order.timeDelivery.toLocaleString() %></p>
                 <% } %>
                 <% if (order.timeCancel !== null && order.timeCancel !== undefined) { %>
-                  <p class="row"><strong class="font-weight-bold">Thời gian hủy đơn hàng:</strong> &nbsp;&nbsp;<%= order.timeCancel %></p>
+                  <p class="row"><strong class="font-weight-bold">Thời gian hủy đơn hàng:   </strong> &nbsp;&nbsp;<%= order.timeCancel.toLocaleString() %></p>
                 <% } %>
                 <% if (order.timeSuccess !== null && order.timeSuccess !== undefined) { %>
-                  <p class="row"><strong class="font-weight-bold">Thời gian giao hàng thành công:</strong> &nbsp;&nbsp;<%= order.timeSuccess %></p>
+                  <p class="row"><strong class="font-weight-bold">Thời gian giao hàng thành công:</strong> &nbsp;&nbsp;<%= order.timeSuccess.toLocaleString() %></p>
                 <% } %>
               </div>
               
@@ -153,7 +153,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   
- $(document).ready(function () {
+
   $(document).ready(function () {
   $("#statusSelect").change(function () {
     var status = $(this).val();
@@ -207,6 +207,7 @@
         success: function (response) {
           showAlert("success", "Trạng thái đơn hàng đã được cập nhật thành công!");
           $("#confirmModal").modal("hide");
+          reloadPage();
         },
         error: function (err) {
           console.error("Lỗi khi cập nhật trạng thái đơn hàng:", err);
@@ -215,6 +216,9 @@
         },
       });
     });
+    function reloadPage() {
+    location.reload();
+  }
 
     function showAlert(type, message) {
       const alertClass = type === "success" ? "alert-success" : "alert-danger";
@@ -224,7 +228,7 @@
         $(alert).remove();
       }, 5000);
     }
-  });
+  
 </script>
 
 <%- include('footer') -%>

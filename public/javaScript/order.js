@@ -15,31 +15,50 @@ function displayOrder(orders) {
   orders.forEach((order) => {
     const newRow = document.createElement("tr");
     newRow.setAttribute("data-order-id", order._id);
-    let statusText = order.status; 
-    if (order.status === "pending") {
-      statusText = "Chờ xác nhận"; 
-    } else if (order.status == "active") {
-      statusText = "Xác nhận"
-    } else if (order.status == "deactive") {
-      statusText = "Đã hủy"
-    } else if (order.status == "trading") {
-      statusText = "Đang giao"
-    } else if (order.status == "delivered") {
-      statusText = "Đã giao"
+    let statusText = "";
+    let timeDisplay = "";
+    const orderTime = new Date(order.timeOrder);
+    const confirmTime = new Date(order.timeConfirm);
+    const deliveryTime = new Date(order.timeDelivery);
+    const cancelTime = new Date(order.timeCancel);
+    const successTime = new Date(order.timeSuccess);
+
+    // Định dạng lại thời gian hiển thị
+    switch (order.status) {
+      case "pending":
+        statusText = "Chờ xác nhận";
+        timeDisplay = orderTime.toLocaleString();
+        break;
+      case "active":
+        statusText = "Đã xác nhận";
+        timeDisplay = confirmTime.toLocaleString();
+        break;
+      case "deactive":
+        statusText = "Đã hủy";
+        timeDisplay = cancelTime.toLocaleString();
+        break;
+      case "trading":
+        statusText = "Đang giao";
+        timeDisplay = deliveryTime.toLocaleString();
+        break;
+      case "delivered":
+        statusText = "Đã giao";
+        timeDisplay = successTime.toLocaleString();
+        break;
     }
 
     newRow.innerHTML = `
-        <td class= 'h6'>${order._id}</td>
-        <td class= 'h6'>${order.idUser}</td>
-        <td class= 'h6'>${order.quantity}</td>
-        <td class= 'h6'>${statusText}</td>
-        <td class= 'h6'>${order.timeOrder}</td>
-        <a href="${order._id}" style="color: #007bff; text-decoration: none; text-align: center; display: block;">Chi tiết</a>
-       
+        <td class='h6'>${order._id}</td>
+        <td class='h6'>${order.idUser}</td>
+        <td class='h6'>${order.totalPrice} VNĐ</td>
+        <td class='h6'>${statusText}</td>
+        <td class='h6'>${timeDisplay}</td>
+        <td><a href="${order._id}" style="color: #007bff; text-decoration: none;">Chi tiết</a></td>
         `;
     tableOrder.appendChild(newRow);
   });
 }
+
 document.addEventListener("DOMContentLoaded", function () {
   // Lấy tất cả các hàng (rows) trong bảng
   const rows = document.querySelectorAll("#order-table-body tr");
