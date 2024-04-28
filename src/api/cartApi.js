@@ -11,8 +11,5 @@ router.get(
 );
 router.get("/api/cart/reduce/:id_user/:id_product", cartController.reduce);
 router.get("/api/cart/increase/:id_user/:id_product", cartController.increase);
-router.get(
-  "/api/cart/clear/order/:id_user/:id_product",
-  cartController.clearProduct
-);
+router.get("/api/cart/clear/order/:id_user", cartController.clearProduct);
 module.exports = router;

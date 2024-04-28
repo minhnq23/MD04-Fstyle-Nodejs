@@ -16,6 +16,7 @@ const loginRouter = require("./src/routers/login");
 
 const signInRouter = require("./src/routers/signIn");
 const homeRouter = require("./src/routers/home");
+const userRouter = require("./src/routers/userRouter");
 const categoriesRouter = require("./src/routers/categories");
 const orderRouter = require("./src/routers/order");
 const productRouter = require("./src/routers/products");
@@ -37,6 +38,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/", loginRouter);
+app.use("/", userRouter);
 app.use("/", signInRouter);
 app.use("/", loginRouter);
 app.use("/", homeRouter);
@@ -76,6 +78,10 @@ const uri =
 //   .catch((error) => {
 //     console.error("Error sending message:", error);
 //   });
+
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
 
 app.listen(PORT, async () => {
   console.log(`Server started on port ${PORT}`);
