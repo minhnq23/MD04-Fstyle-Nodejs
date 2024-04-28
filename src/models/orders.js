@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "Name Product",
       },
-      quantity: {
+      soLuong: {
         type: Number,
         default: 1,
       },
@@ -25,18 +25,17 @@ const orderSchema = new mongoose.Schema({
       size: {
         type: String,
       },
-      imageDefault:{
+      imageDefault: {
         type: String,
-      }
-
+      },
     },
   ],
   idUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
+    ref: "user",
+    required: true,
   },
-  quantity: {
+  totalProduct: {
     type: Number,
     default: 1,
   },
@@ -53,7 +52,7 @@ const orderSchema = new mongoose.Schema({
     enum: ["COD", "Sandbox"],
     default: "COD",
   },
-  shippingMethod: { 
+  shippingMethod: {
     type: String,
     enum: ["standard", "express"],
     default: "standard",
@@ -62,20 +61,26 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  timeConfirm: {
+    type: Date,
+  },
   timeDelivery: {
     type: Date,
   },
   timeCancel: {
     type: Date,
   },
-  thoiGianDangGiao: {
+  timeSuccess: {
     type: Date,
   },
   status: {
     type: String,
-    enum: ["active", "deactive","pending","trading","delivered"],
-    default: "active",
+    enum: ["active", "deactive", "pending", "trading", "delivered"],
+    default: "pending",
     required: true,
+  },
+  customerName: {
+    type: String,
   },
 });
 
