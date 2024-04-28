@@ -90,6 +90,25 @@ $(document).ready(function () {
         if(data.message ==="success"){
           document.getElementById("result_total").textContent=`Doanh thu từ ${startDateString.value} đến ${endDateString.value} là: ${data.total.toLocaleString()} VNĐ`
           document.getElementById("result_total").style.fontWeight ='bold' 
+          document.getElementById("title").textContent = "Sản phẩm đã bán"
+          const productSoltOut = data.uniqueProduct.map((product) => `
+        <div class="col-lg-4 mb-4 text-center">
+          <div class="product-entry border">
+            <a class="prod-img">
+              <img src="${product.imageDefault}" class="img-fluid" alt="Fstyle shop">
+            </a>
+            <div class="desc">
+              <h2><a href="#">${product.name}</a></h2>
+              <span class="price">Giá: ${product.price.toLocaleString()} VNĐ</span>
+              <span class="price">Số lượng đã bán: ${product.soldQuantity}</span>
+            </div>
+          </div>
+        </div>
+        `
+          )
+          .join("");
+    
+        document.getElementById("product-list-sold-out").innerHTML = productSoltOut;
         }else{
           alert(data.message)
         }
