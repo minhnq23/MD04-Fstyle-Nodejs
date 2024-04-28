@@ -77,6 +77,10 @@ const uri =
 //     console.error("Error sending message:", error);
 //   });
 
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
 app.listen(PORT, async () => {
   console.log(`Server started on port ${PORT}`);
   await mongoose.connect(uri).then(console.log("connect mongoDb thanh cong"));

@@ -7,5 +7,4 @@ router.post("/api/orders/:id", orderController.createOrder);
 router.get("/api/orders/:orderId", orderController.getOrderByOrderId);
 router.put("/api/orders/:id", orderController.updateOrderStatus);
 router.get("/api/orders/getbyuser/:userId", orderController.getOrdersByUserId);
-//router.get("/api/test", orderController.testApi);
 module.exports = router;
