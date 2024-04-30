@@ -4,6 +4,51 @@ const UserModel = require("../models/user");
 const Product = require("../models/product");
 var admin = require("firebase-admin");
 const router = require("../api/orderApi");
+exports.totalAmount = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const startTime = new Date(startDate);
+    const endTime = new Date(endDate);
+
+    const orders = await Order.find({
+      status: "delivered",
+      timeOrder: { $gte: startTime },
+      timeSuccess: { $lte: endTime }
+    });
+
+    let uniqueProduct = [];
+    let totalAmount = 0;
+
+    for (const order of orders) {
+      totalAmount += parseFloat(order.totalPrice);
+
+      for (const product of order.listProduct) {
+        const existingProduct = uniqueProduct.find(item => item.idProduct === product.idProduct);
+       
+        if (!existingProduct) {
+           const foundProduct = await Product.findOne({ _id: product.idProduct });
+          uniqueProduct.push({
+            idProduct: product.idProduct,
+            name: product.name,
+            soLuong: product.soLuong,
+            price: product.price,
+            size: product.size,
+            imageDefault: product.imageDefault,
+            soldQuantity: foundProduct ? foundProduct.soldQuantity : 0
+          });
+        } else {
+          existingProduct.soldQuantity += product.soLuong;
+        
+        }
+      }
+    }
+
+    console.log(uniqueProduct);
+    res.status(200).json({ status: 200, message: "success", total: totalAmount, uniqueProduct:uniqueProduct });
+  } catch (error) {
+    res.status(404).json({ status: 404, message: error.message });
+  }
+};
 exports.createOrder = async (req, res) => {
   const idUser = req.params.id;
   const {
