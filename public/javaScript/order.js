@@ -1,9 +1,12 @@
+let orders = [];
+
 fetch("/api/orders")
   .then((response) => response.json())
   .then((data) => {
     if (data.message === "All orders retrieved successfully") {
       $(".cart .icon-shopping-cart").text(`Order[${data.orders.length}]`);
-      displayOrder(data.orders);
+      orders = data.orders;
+      displayOrder(orders);
     }
   })
   .catch((error) => console.error("Error fetching orders:", error));
@@ -23,7 +26,6 @@ function displayOrder(orders) {
     const cancelTime = new Date(order.timeCancel);
     const successTime = new Date(order.timeSuccess);
 
-    // Định dạng lại thời gian hiển thị
     switch (order.status) {
       case "pending":
         statusText = "Chờ xác nhận";
@@ -60,16 +62,23 @@ function displayOrder(orders) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Lấy tất cả các hàng (rows) trong bảng
-  const rows = document.querySelectorAll("#order-table-body tr");
+  const searchForm = document.querySelector(".search-wrap");
 
-  // Lặp qua từng hàng và gán event listener cho mỗi hàng
-  rows.forEach(function (row) {
-    row.addEventListener("click", function () {
-      // Xử lý sự kiện click ở đây
-      // Ví dụ: In ra ID của hàng khi click vào
-      const orderId = row.getAttribute("data-order-id");
-      alert("Đã click vào hàng có ID:", orderId);
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const searchQuery = document
+      .getElementById("query-search-order")
+      .value.trim()
+      .toLowerCase();
+
+    const filteredOrders = orders.filter(function (order) {
+      return (
+        order._id.toLowerCase().includes(searchQuery) ||
+        order.idUser.toLowerCase().includes(searchQuery)
+      );
     });
+
+    displayOrder(filteredOrders);
   });
 });
