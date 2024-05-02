@@ -12,18 +12,30 @@ exports.totalAmount = async (req, res) => {
 
     const orders = await Order.find({
       status: "delivered",
-      timeOrder: { $gte: startTime },
-      timeSuccess: { $lte: endTime }
+      timeSuccess: {$gte: startTime, $lte: endTime }
     });
 
     let uniqueProduct = [];
     let totalAmount = 0;
+    const dailyTotalPrices = {};
+
+    orders.forEach(order => {
+      const date = order.timeSuccess.toISOString().slice(0, 10);
+      if (!dailyTotalPrices[date]) {
+        dailyTotalPrices[date] = 0;
+      }
+      dailyTotalPrices[date] += parseFloat(order.totalPrice);
+    });
+
+    const sortedDates = Object.keys(dailyTotalPrices).sort();
+    const labels = sortedDates;
+    const prices = sortedDates.map(date => dailyTotalPrices[date]);
 
     for (const order of orders) {
       totalAmount += parseFloat(order.totalPrice);
 
       for (const product of order.listProduct) {
-        const existingProduct = uniqueProduct.find(item => item.idProduct === product.idProduct);
+        const existingProduct = uniqueProduct.find(item => item.idProduct.toString() === product.idProduct.toString());
        
         if (!existingProduct) {
            const foundProduct = await Product.findOne({ _id: product.idProduct });
@@ -36,15 +48,11 @@ exports.totalAmount = async (req, res) => {
             imageDefault: product.imageDefault,
             soldQuantity: foundProduct ? foundProduct.soldQuantity : 0
           });
-        } else {
-          existingProduct.soldQuantity += product.soLuong;
-        
         }
       }
     }
-
-    console.log(uniqueProduct);
-    res.status(200).json({ status: 200, message: "success", total: totalAmount, uniqueProduct:uniqueProduct });
+    console.log(uniqueProduct)
+    res.status(200).json({ status: 200, message: "success", total: totalAmount, uniqueProduct:uniqueProduct, labels,prices });
   } catch (error) {
     res.status(404).json({ status: 404, message: error.message });
   }

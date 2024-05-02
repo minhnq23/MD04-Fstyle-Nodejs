@@ -2,37 +2,29 @@ const startDate = document.getElementById("start-date-i");
 const endDate = document.getElementById("end-date-i");
 const startDateString = document.getElementById("startDate");
 const endDateString = document.getElementById("endDate");
-
-// function checkRequired2(inputArr){
-//       let isRequired = false
-//       inputArr.forEach(input=>{
-//        if(input.value.trim()===''){
-//         showError(input,`*${getFieldName(input)} is required` )
-//         isRequired =true
-//        }else{
-//         showSuccess(input)
-//        }
-//       })
-//       return isRequired
-// }
-// function getFieldName(input) {
-//   return input.name.charAt(0).toUpperCase() + input.name.slice(1)
-// }
-// function showError(input, message) {
-//   const formControl = input.parentElement
-//   formControl.className = 'form-control error'
-//   const small = formControl.querySelector('small')
-//   small.innerText = message
-//   small.style.color = 'red'
-// }
-// // Show success outline
-// function showSuccess(input) {
-//   const formControl = input.parentElement
-//   formControl.className = 'form-control success'
-//   const small = formControl.querySelector('small')
-//   small.innerText = ''
-// }
+const startDateError = document.getElementById("startDateError")
+const endDateError = document.getElementById("endDateError")
+function validate(){
+   let isCheck = true
+   if(startDateString.value.trim()===''){
+    startDateError.textContent= "*Chưa chọn ngày bắt đầu"
+    isCheck = false
+  }else{
+    startDateError.textContent=""
+    isCheck = true
+  }
+  if(endDateString.value.trim()===''){
+    endDateError.textContent= "*Chưa chọn ngày kết thúc"
+    isCheck = false
+  }else{
+    endDateError.textContent =""
+    isCheck = true
+  }
+ 
+  return isCheck
+}
 $(document).ready(function () {
+  let chart = null
   $(startDate).datepicker({
     format: "dd/mm/yyyy",
     autoclose: true,
@@ -62,8 +54,8 @@ $(document).ready(function () {
   });
 
   function formatDate(date) {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
+    const day = String(date.getDate()).padStart(2, "0"); 
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
   }
@@ -77,9 +69,9 @@ $(document).ready(function () {
       const parts2 = endDateString.value.split("-").join("");
       const numberEnddate = parseInt(parts2, 10);
       console.log(startDateString.value, endDateString.value);
-      // if(checkRequired2([startDateString,endDateString])){
-      //   return
-      // }
+      if(!validate()){
+        return
+      }
       if (numberStartdate >= numberEnddate ) {
         alert("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
         return;
@@ -91,6 +83,39 @@ $(document).ready(function () {
           document.getElementById("result_total").textContent=`Doanh thu từ ${startDateString.value} đến ${endDateString.value} là: ${data.total.toLocaleString()} VNĐ`
           document.getElementById("result_total").style.fontWeight ='bold' 
           document.getElementById("title").textContent = "Sản phẩm đã bán"
+          
+          if(chart){
+            chart.destroy()
+          }
+          const ctx = document.getElementById('priceChart').getContext('2d');
+         
+           chart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: data.labels,
+                  datasets: [{
+                      label: 'Prices by Date',
+                      data: data.prices,
+                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      borderWidth: 1,
+                      barThickness: 30
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          callback: function(value, index, values) {
+                            return value.toLocaleString() + ' VNĐ';
+                          }
+                        }
+                         
+                      }
+                  }
+              }
+          });
           const productSoltOut = data.uniqueProduct.map((product) => `
         <div class="col-lg-4 mb-4 text-center">
           <div class="product-entry border">
