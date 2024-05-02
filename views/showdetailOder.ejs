@@ -18,12 +18,18 @@
                 <div class="form-group">
                 <label for="statusSelect">Trạng thái đơn hàng:</label>
                 <select class="form-control" id="statusSelect">
-                  <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Chờ xác nhận</option>
-                  <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
-                  <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
-                  <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Xác nhận</option>
-                  <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Đã hủy</option>
-                </select>
+                  <option value="" disabled selected hidden>Chọn trạng thái</option>
+                  <% if (order.status === 'pending') { %>
+                      <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Xác nhận</option>
+                      <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
+                  <% } else if (order.status === 'active') { %>
+                      <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
+                      
+                  <% } else if (order.status === 'trading') { %>
+                      <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
+                      
+                  <% } %>
+              </select>
               </div>
 
               <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;
@@ -191,10 +197,6 @@
     $("#confirmModal").modal("show");
   });
 });
-
-  
-  
-
     $("#confirmStatusBtn").click(function () {
   var confirmTime = $("#confirmTime").text();
   var deliveryTime = $("#deliveryTime").text();
