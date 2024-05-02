@@ -91,7 +91,7 @@
               <p class="row"><strong class="font-weight-bold">Địa chỉ:</strong>&nbsp;&nbsp; <%= order.address %></p>
               <p class="row"><strong class="font-weight-bold">Tên người dùng:</strong>&nbsp;&nbsp; <%= user.name %></p>
               <p class="row"><strong class="font-weight-bold">Số điện thoại:</strong>&nbsp;&nbsp; <%= order.phone %></p>
-              <p class="row"><strong class="font-weight-bold">Tổng tiền:</strong>&nbsp;&nbsp; <%= order.totalPrice %></p>
+              <p class="row"><strong class="font-weight-bold">Tổng tiền:</strong>&nbsp;&nbsp; <%= order.totalPrice.toLocaleString() %> VNĐ</p>
               <p class="row">
                 <strong class="font-weight-bold">Phương thức thanh toán:</strong>&nbsp;&nbsp; <%= order.paymentMethods %>
               </p>
@@ -131,7 +131,7 @@
                   <p class="row"><strong class="font-weight-bold">Tên Sản phẩm :</strong>&nbsp;&nbsp;<%= product.name %></p>
                   
                   <p class="row">
-                    <strong class="font-weight-bold">Giá Sản phẩm:</strong> &nbsp;&nbsp;<%= product.price %> VNĐ
+                    <strong class="font-weight-bold">Giá Sản phẩm:</strong> &nbsp;&nbsp;<%= product.price.toLocaleString() %> VNĐ
                   </p>
                   <p class="row">
                     <strong class="font-weight-bold">Size Sản phẩm:</strong> &nbsp;&nbsp;<%= product.size %>
