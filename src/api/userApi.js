@@ -8,5 +8,5 @@ router.post("/api/user/post", userController.createUser);
 router.get("/api/user/:id", userController.getUser);
 router.put("/api/user/update/:id", userController.updateUser);
 router.post("/api/user/signin", userController.signIn);
-
+router.get("/api/user/lockup/:id",userController.lockupUser)
 module.exports = router;

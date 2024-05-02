@@ -22,13 +22,17 @@ const UserSchema = new mongoose.Schema({
   phone: {
     type: "string",
   },
-  consigneeName: {
-    type: "string",
-  },
   isAdmin: {
     type: "boolean",
     default: false,
   },
+  isLocked:{
+    type:"boolean",
+    default:true
+  },
+  lastLoggedIn: {
+     type: Date 
+  }
 });
 const UserModel = mongoose.model("user", UserSchema);
 module.exports = UserModel;
