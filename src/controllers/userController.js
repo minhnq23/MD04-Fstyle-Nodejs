@@ -2,13 +2,26 @@ const express = require("express");
 const User = require("../models/user");
 const Cart = require("../models/cart");
 const UserModel = require("../models/user");
-
+exports.lockupUser = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.isLocked = !user.isLocked;
+    await user.save();
+    res.status(200).json({ message: "User locked status updated", user });
+  } catch (error) {
+    console.error("Error updating user locked status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 exports.signIn = async (req, res) => {
   const { email, password, tokenDevice } = req.body;
   console.log(email, password, tokenDevice);
   const authUser = await UserModel.findOne({ email: email });
   if (!authUser) {
-    // Handle case where user with the provided email is not found
     return res.status(404).json({ message: "User not found" });
   } else {
     if (!(password == authUser.password)) {
@@ -17,6 +30,7 @@ exports.signIn = async (req, res) => {
   }
 
   authUser.tokenDevice = tokenDevice;
+  authUser.lastLoggedIn = new Date();
   await authUser.save();
   res.json(authUser);
 };
