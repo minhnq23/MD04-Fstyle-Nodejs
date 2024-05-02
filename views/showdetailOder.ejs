@@ -15,22 +15,35 @@
                 <strong class="font-weight-bold">Thời gian đặt hàng:</strong> &nbsp;&nbsp;<%= order.timeOrder.toLocaleString() %>
               </p>
                 <p class="row">
-                <div class="form-group">
-                <label for="statusSelect">Trạng thái đơn hàng:</label>
-                <select class="form-control" id="statusSelect">
-                  <option value="" disabled selected hidden>Chọn trạng thái</option>
-                  <% if (order.status === 'pending') { %>
-                      <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Xác nhận</option>
-                      <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
-                  <% } else if (order.status === 'active') { %>
-                      <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
-                      
-                  <% } else if (order.status === 'trading') { %>
-                      <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
-                      
-                  <% } %>
-              </select>
-              </div>
+                  <% if (order.status === 'pending' || order.status === 'active' || order.status === 'trading') { %>
+                    <div class="form-group">
+                        <label for="statusSelect">Trạng thái đơn hàng:</label>
+                        <select class="form-control" id="statusSelect">
+                          <option value="" disabled selected hidden>Chọn trạng thái</option>
+                            <% if (order.status === 'pending') { %>
+                                <option value="active" <%= order.status === 'active' ? 'selected' : '' %>>Xác nhận</option>
+                                <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
+                            <% } else if (order.status === 'active') { %>
+                                <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
+                               
+                            <% } else if (order.status === 'trading') { %>
+                                <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
+                                
+                            <% } else if (order.status === 'delivered') { %>
+                                <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
+                            <% } %>
+                        </select>
+                    </div>
+                <% } else if (order.status === 'delivered') { %>
+                  <div class="alert alert-success" role="alert" style="margin-left: 0; margin-right: 0;">
+                    Đơn hàng đã được giao thành công!
+                </div>
+                <% } else if (order.status === 'deactive') { %>
+                  <div class="alert alert-danger" role="alert" style="margin-left: 0; margin-right: 0;">
+                    Đơn hàng đã bị huỷ !
+                </div>
+                <% }%>
+                
 
               <p class="row"><strong class="font-weight-bold">Trạng thái:</strong> &nbsp;&nbsp;
                 <%
