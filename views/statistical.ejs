@@ -8,6 +8,7 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="container mt-5 border text-center">
   <h2>Thống kê</h2>
   <form action="" id="date-form">
@@ -28,6 +29,7 @@
             readonly
           />
         </div>
+        <small id="startDateError" class="form-text text-danger"></small>
       </div>
       <div class="col-md-4">
         <div class="input-group mb-3">
@@ -45,22 +47,28 @@
             </span>
           </div>
         </div>
+        <small id="endDateError" class="form-text text-danger"></small>
       </div>
       <div class="col-md-4 text-center">
         <button type="submit" class="btn btn-primary" id="showCalendarBtn">
-          Chọn ngày tháng
+          Thống kê
         </button>
       </div>
     </div>
   </form>
-  <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div
-        id="calendarContainer"
-        class="calendar-container"
-        style="display: none"
-      ></div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+      <p id="result_total" class="result-text"></p>
     </div>
   </div>
+  <div class="row justify-content-center mt-4 " >
+    <div class="col-md-8">
+      <p class="h2" id="title"></p>
+      <div id="product-list-sold-out" class="row row-pb-md">
+
+      </div>
+    </div>
+  </div>
+  <canvas id="priceChart" width="800" height="400"></canvas>
 </div>
 <%- include('footer') -%>
