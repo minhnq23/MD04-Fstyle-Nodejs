@@ -25,6 +25,7 @@
                                 <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
                             <% } else if (order.status === 'active') { %>
                                 <option value="trading" <%= order.status === 'trading' ? 'selected' : '' %>>Đang giao</option>
+                                <option value="deactive" <%= order.status === 'deactive' ? 'selected' : '' %>>Hủy</option>
                                
                             <% } else if (order.status === 'trading') { %>
                                 <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Đã giao</option>
